@@ -3,9 +3,9 @@
 	numeroB: .word 0
 	numeroC: .word 0
 	
-	stringNumeroA:	.asciiz "NumeroA: "
-	stringNumeroB:	.asciiz "\nNumeroB: "
-	stringNumeroC:	.asciiz "\nNumeroC: "
+	stringNumeroA:	        .asciiz "NumeroA: "
+	stringNumeroB:	        .asciiz "\nNumeroB: "
+	stringNumeroC:	        .asciiz "\nNumeroC: "
 	
 	stringResultadoADD:     .asciiz "ADD: "
 	stringResultadoSUB:     .asciiz "\nSUB: "
