@@ -6,3 +6,4 @@ Repositório destinado aos exercícios e trabalhos aplicados na disciplina Funda
 ### Integrantes:
 
 - Bruno Alves Félix, 16/0114705;
+- Eduarda Servidio Claudino - 17/0161897
