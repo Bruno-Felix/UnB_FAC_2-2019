@@ -1,0 +1,88 @@
+.data
+	numeroA: .word 0
+	numeroB: .word 0
+	numeroC: .word 0
+	
+	string:                 .asciiz "A exponencial modular "
+	string1:                .asciiz "elevado a "
+	string2:                .asciiz "(mod "
+	string3:                .asciiz ") eh"
+	stringPonto:            .asciiz "."
+	stringEntradaInvalida:  .asciiz "Entradas invalidas."
+	stringNaoEhPrimo:       .asciiz "O modulo nao eh primo"
+
+.text
+
+main:
+	#leitura numeroA
+ 	li $v0, 5
+ 	sw $v0, numeroA
+ 	syscall
+ 	move $s0, $v0
+
+ 	#leitura numeroB
+ 	li $v0, 5
+ 	sw $v0, numeroB
+ 	syscall
+ 	move $s1, $v0
+ 	
+ 	#leitura numeroC
+ 	li $v0, 5
+ 	sw $v0, numeroC
+ 	syscall
+ 	move $s2, $v0
+ 	
+ 	#Verificar se os numeros recebidos sao maiores que 0
+ 	move $t6,$0
+ 	addi $t6,$t6,1
+ 	
+ 	slt $t0,$s0,$zero
+ 	beq $t0,$t6,exit
+ 	
+ 	slt $t1,$s1,$zero
+ 	beq $t1,$t6,exit
+ 	
+ 	slt $t2,$s2,$zero
+ 	beq $t2,$t6,exit
+ 	
+ 	#inicializar as variaveis
+ 	li $t3, 2 #i=2
+ 	li $t4, 0 #contadorPrimo
+ 	
+ 	#for para saber se o modulo eh primo
+ 	for:
+ 	beq $t3,$s2,saida
+ 	add $t3,$t3,1 #incremento de i
+ 	
+ 	mfhi $t5
+ 	beq $t5,$zero,L1
+ 	j for
+ 	
+ 	beq $t5, $zero,exit1
+ 	
+ 	L1:
+ 	add $t5,$t5,1
+ 	
+ 	exit:
+ 	#impressaoStringNumeroInvalido
+ 	li $v0, 4
+ 	la $a0, stringEntradaInvalida
+ 	syscall
+ 	
+ 	#saida
+ 	li $v0, 10
+ 	syscall
+ 	
+ 	exit1:
+ 	#impressaoStringModuloNaoPrimo
+ 	li $v0, 4
+ 	la $a0, stringNaoEhPrimo
+ 	syscall
+ 	
+ 	#saida
+ 	li $v0, 10
+ 	syscall
+	
+	saida:
+	li $v0, 10
+ 	syscall
