@@ -1,0 +1,138 @@
+.data
+	base: .word 0
+	expoente: .word 0
+	primo: .word 0
+	
+	string:                 .asciiz "A exponencial modular "
+	string1:                .asciiz " elevado a "
+	string2:                .asciiz "(mod "
+	string3:                .asciiz ") eh"
+	stringPonto:            .asciiz "."
+	stringEntradaInvalida:  .asciiz "Entradas invalidas."
+	stringNaoEhPrimo:       .asciiz "O modulo nao eh primo."
+
+.text
+
+main:
+	#leitura base
+ 	li $v0, 5
+ 	sw $v0, base
+ 	syscall
+ 	move $s0, $v0
+
+ 	#leitura expoente
+ 	li $v0, 5
+ 	sw $v0, expoente
+ 	syscall
+ 	move $s1, $v0
+ 	
+ 	#leitura primo
+ 	li $v0, 5
+ 	sw $v0, primo
+ 	syscall
+ 	move $s2, $v0
+ 	
+ 	#Verificar se os numeros recebidos sao maiores que 0,
+ 	#se nao forem imprimo a mensagem "Entradas Invalidas" (imprime_erro)
+ 	move $t3,$0
+ 	addi $t3,$t3,1
+ 	
+ 	slt $t0,$s0,$zero
+ 	beq $s0,$zero,imprime_erro
+ 	beq $t0,$t3,imprime_erro
+ 	
+ 	slt $t1,$s1,$zero
+ 	beq $s1,$zero,imprime_erro
+ 	beq $t1,$t3,imprime_erro
+ 	
+ 	slt $t2,$s2,$zero
+ 	beq $s2,$zero,imprime_erro
+ 	beq $t2,$t3,imprime_erro
+ 	
+ 	#inicializar as variaveis
+ 	#O calculo para descobrir se o terceiro numero é primo:
+ 	#será feito um for de i=2 até i<Terceiro_numero; dentro desse for terá um if:
+ 	#Se Terceiro_numero%i == 0, incremento 1 ao auxiliar.
+ 	#Se o numero for primo, esse auxiliar terá valor 0.
+ 	
+ 	li $t4, 1 #i=1
+ 	li $t5, 0 #auxiliar
+ 	
+ 	#for para saber se o modulo eh primo
+ 	for:
+ 	#enquanto i != Terceiro_numero, o for funciona
+ 	beq $t4,$s2,impressao
+ 	add $t4,$t4,1 #incremento de i
+ 	
+ 	div $t6,$s2,$t3
+ 	mfhi $t7
+ 	
+ 	beq $t7,$zero,L1
+ 	j for
+ 	
+ 	L1:
+ 	add $t5,$t5,1
+ 	j for
+ 	
+ 	#impressao String Numero Invalido
+ 	imprime_erro:
+ 	li $v0, 4
+ 	la $a0, stringEntradaInvalida
+ 	syscall
+ 	
+ 	#saida
+ 	li $v0, 10
+ 	syscall
+	
+	impressao:
+	bne $t5, $zero,impressao_erro_n_eh_primo
+	
+	#calculo exponencial
+	
+	#impressao resultado calculo exponencial
+	li $v0, 4
+ 	la $a0, string
+ 	syscall
+ 	
+ 	li $v0, 1
+ 	move $a0, $s0
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, string1
+ 	syscall
+ 	
+ 	li $v0, 1
+ 	move $a0, $s1
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, string2
+ 	syscall
+ 	
+ 	li $v0, 1
+ 	move $a0, $s2
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, string3
+ 	syscall
+ 	
+ 	li $v0, 4
+ 	la $a0, stringPonto
+ 	syscall
+ 	
+	#saida
+	li $v0, 10
+ 	syscall
+	
+	#impressao String Modulo Nao Primo
+	impressao_erro_n_eh_primo:
+ 	
+	li $v0, 4
+ 	la $a0, stringNaoEhPrimo
+ 	syscall
+ 	
+ 	#saida
+ 	li $v0, 10
+ 	syscall
