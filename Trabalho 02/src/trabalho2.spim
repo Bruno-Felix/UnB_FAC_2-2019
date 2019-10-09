@@ -50,45 +50,41 @@ main:
  	beq $t2,$t3,imprime_erro
  	
  	#inicializar as variaveis
- 	#O calculo para descobrir se o terceiro numero é primo:
- 	#será feito um for de i=2 até i<Terceiro_numero; dentro desse for terá um if:
+ 	#O calculo para descobrir se o terceiro numero ï¿½ primo:
+ 	#serï¿½ feito um for de i=2 atï¿½ i<Terceiro_numero; dentro desse for terï¿½ um if:
  	#Se Terceiro_numero%i == 0, incremento 1 ao auxiliar.
- 	#Se o numero for primo, esse auxiliar terá valor 0.
+ 	#Se o numero for primo, esse auxiliar terï¿½ valor 0.
  	
- 	li $t4, 1 #i=1
+ 	li $t4, 2 #i=1
  	li $t5, 0 #auxiliar
  	
  	#for para saber se o modulo eh primo
- 	for:
+ 	forPrimo:
  	#enquanto i != Terceiro_numero, o for funciona
- 	beq $t4,$s2,impressao
- 	add $t4,$t4,1 #incremento de i
+ 	beq $t4,$s2,validacaoPrimo
  	
- 	div $t6,$s2,$t3
+ 	div $t6,$s2,$t4
  	mfhi $t7
  	
+ 	add $t4,$t4,1 #incremento de i
+ 	
  	beq $t7,$zero,L1
- 	j for
+ 	j forPrimo
  	
  	L1:
  	add $t5,$t5,1
- 	j for
- 	
- 	#impressao String Numero Invalido
- 	imprime_erro:
- 	li $v0, 4
- 	la $a0, stringEntradaInvalida
- 	syscall
- 	
- 	#saida
- 	li $v0, 10
- 	syscall
+ 	j forPrimo
 	
-	impressao:
-	bne $t5, $zero,impressao_erro_n_eh_primo
+	validacaoPrimo:
+		
+		bne $t5, $zero,impressao_erro_n_eh_primo
 	
 	#calculo exponencial
 	
+	forExponencial:
+	
+	
+	impressao:
 	#impressao resultado calculo exponencial
 	li $v0, 4
  	la $a0, string
@@ -131,6 +127,16 @@ main:
  	
 	li $v0, 4
  	la $a0, stringNaoEhPrimo
+ 	syscall
+ 	
+ 	#saida
+ 	li $v0, 10
+ 	syscall
+ 	
+ 	#impressao String Numero Invalido
+ 	imprime_erro:
+ 	li $v0, 4
+ 	la $a0, stringEntradaInvalida
  	syscall
  	
  	#saida
