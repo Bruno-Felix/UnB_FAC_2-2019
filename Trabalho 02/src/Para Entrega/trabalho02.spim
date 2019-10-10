@@ -15,6 +15,7 @@
 
 main:
 	#Leitura dos números:
+	
 	#leitura base
  	li $v0, 5
  	sw $v0, base
@@ -36,26 +37,27 @@ main:
 	
 	#Verificação da Validação das Entradas:
 	
-	addi $t0, $zero, 32767 #Preparando $9 para comparar com entradas e constatar se são menores que 65535
+	addi $t0, $zero, 32767 #Preparando $9 para comparar com as entradas e constatar se são menores ou iguais que 65535
 	addi $t0, $t0, 32767
-	addi $t0, $t0, 2
+	addi $t0, $t0, 2 # t0 -> 32767 + 32767 + 2 = 65356 
 	
 	slt $t3, $0, $s0 #Verificar se a base é maior que 0,
-	beq $t2, $t3, imprimirErroEntradaInvalida
+	beq $t2, $t3, imprimirErroEntradaInvalida #Caso seja menor ou igual a 0, imprimirErroEntradaInvalida
 	slt $t3, $s0, $t0 #Verificar se a base é menor que 65536
-	beq $t3, $zero, imprimirErroEntradaInvalida
+	beq $t3, $zero, imprimirErroEntradaInvalida #Caso seja maior que 65536, imprimirErroEntradaInvalida
 	
 	slt $t3, $0, $s1 #Verificar se o expoente é maior que 0,
-	beq $t2, $t3, imprimirErroEntradaInvalida
+	beq $t2, $t3, imprimirErroEntradaInvalida #Caso seja menor ou igual a 0, imprimirErroEntradaInvalida
 	slt $t3, $s1, $t0 #Verificar se o expoente é menor que 65536
-	beq $t3, $zero, imprimirErroEntradaInvalida
+	beq $t3, $zero, imprimirErroEntradaInvalida #Caso seja maior que 65536, imprimirErroEntradaInvalida
 	
 	slt $t3, $0, $s2 #Verificar se o modulo é maior que 0,
-	beq $t2, $t3, imprimirErroEntradaInvalida
+	beq $t2, $t3, imprimirErroEntradaInvalida #Caso seja menor ou igual a 0, imprimirErroEntradaInvalida
 	slt $t3, $s2, $t0 #Verificar se o modulo é menor que 65536
-	beq $t3, $zero, imprimirErroEntradaInvalida
+	beq $t3, $zero, imprimirErroEntradaInvalida #Caso seja maior que 65536, imprimirErroEntradaInvalida
 	
-	#Verificação se Modulo é um Número Primo:
+	
+	#Verificação se o Módulo é um Número Primo:
 	
 	addi $t0, $zero, 256 #Limite do laço forPrimoMaior
 	addi $t6, $s2, 1 #Limite do laço forPrimoMenor
@@ -64,8 +66,8 @@ main:
 	
 	slt $t1, $s2, $t0 #Se modulo é maior ou menor que 256
 	
-	bne $t1, $0, forPrimoMenor256
-		jal forPrimoMenor256
+	bne $t1, $0, forPrimoMenor256 #Se módulo for menor que 256, entra em forPrimoMenor256
+		jal forPrimoMenor256 #Se módulo for maior que 256, entra em forPrimoMaior256
 	
 	li $v0, 10 #saida, fim de programa na Main
  	syscall
