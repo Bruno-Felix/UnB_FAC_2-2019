@@ -1,0 +1,177 @@
+.data
+	base: .word 0
+	expoente: .word 0
+	modulo: .word 0
+	
+	string:                 .asciiz "A exponencial modular "
+	string1:                .asciiz " elevado a "
+	string2:                .asciiz "(mod "
+	string3:                .asciiz ") eh"
+	stringPonto:            .asciiz "."
+	stringEntradaInvalida:  .asciiz "Entradas invalidas."
+	stringNaoEhPrimo1:      .asciiz "O modulo nao eh primo."
+	stringFinal: 		.asciiz "Entrou."	
+.text
+
+main:
+	#Leitura dos números:
+	#leitura base
+ 	li $v0, 5
+ 	sw $v0, base
+ 	syscall
+ 	move $s0, $v0
+
+ 	#leitura expoente
+ 	li $v0, 5
+ 	sw $v0, expoente
+ 	syscall
+ 	move $s1, $v0
+ 	
+ 	#leitura modulo
+ 	li $v0, 5
+ 	sw $v0, modulo
+ 	syscall
+ 	move $s2, $v0	
+	
+	
+	#Verificação da Validação das Entradas:
+	
+	addi $t0, $zero, 32767 #Preparando $9 para comparar com entradas e constatar se são menores que 65535
+	addi $t0, $t0, 32767
+	addi $t0, $t0, 2
+	
+	slt $t3, $0, $s0 #Verificar se a base é maior que 0,
+	beq $t2, $t3, imprimirErroEntradaInvalida
+	slt $t3, $s0, $t0 #Verificar se a base é menor que 65536
+	beq $t3, $zero, imprimirErroEntradaInvalida
+	
+	slt $t3, $0, $s1 #Verificar se o expoente é maior que 0,
+	beq $t2, $t3, imprimirErroEntradaInvalida
+	slt $t3, $s1, $t0 #Verificar se o expoente é menor que 65536
+	beq $t3, $zero, imprimirErroEntradaInvalida
+	
+	slt $t3, $0, $s2 #Verificar se o modulo é maior que 0,
+	beq $t2, $t3, imprimirErroEntradaInvalida
+	slt $t3, $s2, $t0 #Verificar se o modulo é menor que 65536
+	beq $t3, $zero, imprimirErroEntradaInvalida
+	
+	#Verificação se Modulo é um Número Primo:
+	
+	addi $t0, $zero, 256 #Limite do laço forPrimoMaior
+	addi $t6, $s2, 1 #Limite do laço forPrimoMenor
+	addi $t4, $zero, 1 #Índice do laço forPrimo
+	li $t5, 0 #auxiliar
+	
+	slt $t1, $s2, $t0 #Se modulo é maior ou menor que 256
+	
+	bne $t1, $0, forPrimoMenor256
+		jal forPrimoMenor256
+	
+	li $v0, 10 #saida, fim de programa na Main
+ 	syscall
+	
+	
+ imprimirErroEntradaInvalida:
+ 	li $v0, 4	
+ 	la $a0, stringEntradaInvalida
+ 	syscall
+ 	
+ 	li $v0, 10 #saida
+ 	syscall
+ 	
+ 	
+forPrimoMenor256:
+
+ 	beq $t4,$t6,validacaoPrimoMenor256 #enquanto $t4 != 256($t0), laço forPrimo funciona
+ 	
+ 	div $t3,$s2,$t4 #divisao entre o módulo e o indice ($s2 / $t4)
+ 	mfhi $t7 #resto da divisão
+ 	
+ 	add $t4,$t4,1 #incremento de indice ($t4)
+	 	
+ 	beq $t7,$zero,auxFor1 #Se resto($t7) for igual 0,auxiliar é incrementado o auxiliar e volta pro laço forPrimoMenor256
+ 	j forPrimoMenor256 #Se resto($t7) for diferente de 0,volta a fazer o laço forPrimoMenor256
+ 	
+	auxFor1:
+ 		
+		add $t5,$t5,1 #Incrementado do auxiliar
+		j forPrimoMenor256 #volta a fazer o laço forPrimoMenor256
+ 
+ 
+validacaoPrimoMenor256:
+ 	
+	li $t4, 2 #auxiliar
+	
+	bne $t5, $t4, auxbValidacaoPrimoMenor256
+	
+	bne $t5, $0, elseMenor
+		j impressaoErroPrimoMenor
+	elseMenor:
+		j exponenciaco
+	
+		 	 
+auxbValidacaoPrimoMenor256:
+	li $t5, 0
+
+		
+#impressao String Modulo Nao Primo
+impressaoErroPrimoMenor:
+
+	li $v0, 4
+ 	la $a0, stringNaoEhPrimo1
+ 	syscall
+ 	
+ 	#saida
+ 	li $v0, 10
+ 	syscall	
+ 	
+ 													
+forPrimoMaior256:
+ 
+ 	beq $t4,$0,validacaoPrimoMaior256
+ 	
+ 		
+ 	div $t6,$s2,$t4 #divisao entre o módulo e o indice ($s2 / $t4)	 	mfhi $t7 #resto da divisão
+ 	
+	add $t4,$t4,1 #incremento de indice ($t4)
+	 	
+	beq $t7,$zero,auxFor2 #Se resto($t7) for igual 0,auxiliar é incrementado o auxiliar e volta pro laço forPrimoMenor256	 	j forPrimoMaior256 #Se resto($t7) for diferente de 0,volta a fazer o laço forPrimoMenor256
+ 	j forPrimoMaior256 #Se resto($t7) for diferente de 0,volta a fazer o laço forPrimoMaior256
+ 	
+ 	auxFor2: 	
+ 		add $t5,$t5,1 #Incrementado do auxiliar
+ 		jal forPrimoMaior256 #volta a fazer o laço forPrimoMenor256
+ 			
+
+
+validacaoPrimoMaior256:
+		
+	li $t4, 1 #auxiliar
+		
+	bne $t5, $t4, auxbValidacaoPrimoMenor256
+	
+	bne $t5, $0, elseMaior
+		j impressaoErroPrimoMenor
+	elseMaior:
+		j exponenciaco
+		
+		
+auxbValidacaoPrimoMaior256:
+	li $t5, 0
+ 	
+ 
+impressaoErroPrimoMaior:
+ 	
+ 	#saida
+ 	li $v0, 10
+ 	syscall
+	
+exponenciaco:
+	
+	li $v0, 4
+ 	la $a0, stringFinal
+ 	syscall
+ 	
+ 	#saida
+ 	li $v0, 10
+ 	syscall
