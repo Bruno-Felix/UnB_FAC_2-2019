@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <math.h>
 
+int numeroBits = 16;
 
-void validacaoEntradaInvalida(int numA, int numB, int numC);
-void validacaoPrimo(int numC);
+void verificacaoEntradasValidas(int numA, int numB, int numC);
+void verificacaoModuloPrimo(int numC);
+void transformacaoNumBBinario(int *vetBinarioNumB, int numB);
 void exponenciacao(int numA, int numB, int numC);
 
 
@@ -14,17 +16,19 @@ int main(){
 
     scanf("%d %d %d", &numA, &numB, &numC);
 
-    validacaoEntradaInvalida(numA, numB, numC);
-    validacaoPrimo(numC);
+    verificacaoEntradasValidas(numA, numB, numC);
+    verificacaoModuloPrimo(numC);
 
     exponenciacao(numA, numB, numC);
     
     return 0;
 }
 
-void validacaoEntradaInvalida(int numA, int numB, int numC){
+
+void verificacaoEntradasValidas(int numA, int numB, int numC){
 
     if(numA > 0 && numB > 0 && numC > 0){
+        
     }
     else{
         printf("Entradas invalidas.\n");
@@ -35,18 +39,18 @@ void validacaoEntradaInvalida(int numA, int numB, int numC){
     }
     else{
         printf("Entradas invalidas.\n");
-        exit(1);
+        exit(2);
     }
     
 }
 
-void validacaoPrimo(int numC){
+void verificacaoModuloPrimo(int numC){
 
     int aux = 0;
 
     if(numC <= 256){
 
-        for(int i = 1; i <=numC; i++){
+        for(int i = 1; i <= numC; i++){
             
             if(numC%i == 0){
                 aux++;
@@ -58,7 +62,7 @@ void validacaoPrimo(int numC){
     }
     else{
         
-        for(int i = 1; i <256; i++){
+        for(int i = 1; i < 256; i++){
             
             if(numC%i == 0){
                 aux++;
@@ -79,55 +83,51 @@ void validacaoPrimo(int numC){
 
     if(aux != 0){
         printf("O modulo nao eh primo.\n");
-        exit(1);
+        exit(3);
     }
 }
 
-void exponenciacao(int numA, int numB, int numC){
-    
-    int n = numB;
-    int r; // Resultado do deslocamento
+void transformacaoNumBBinario(int *vetBinarioNumB, int numB){
 
-    int vetBinarioNumB[16] = {0};
-    
-    // Utiliza um número de 16 bits como base para a conversão.
+    int auxNumB = numB;
+    int descolamento;
+
     for(int i = 15; i >= 0; i--) {
-        // Executa a operação shift right até a 
-        // última posição da direita para cada bit.
-        r = n >> i;
+
+        descolamento = auxNumB >> i;
             
-        // Por meio do "e" lógico ele compara se o valor 
-        // na posição mais à direita é 1 ou 0 
-        // e imprime na tela até reproduzir o número binário.
-        if(r & 1) {
+        if(descolamento & 1) {
             printf("1");
             vetBinarioNumB[i] = 1;
-        } else {
+        }
+        else {
             printf("0");
             vetBinarioNumB[i] = 0;
         }
     }
     printf("\n");
+}
+
+void exponenciacao(int numA, int numB, int numC){
+    
+    int *vetBinarioNumB = (int *) calloc(numeroBits, sizeof(int));
+
+    transformacaoNumBBinario(vetBinarioNumB, numB);
 
     int FAT = numA;
     int auxFAT = numA;
 
     for(int j = 0; j <= 15; j++){
 
-        /* printf("FATinit %d = %d\n", j, FAT); */
-
         if(j == 0 && vetBinarioNumB[j] == 1){
+
             auxFAT = (vetBinarioNumB[j]*FAT)%numC;
             FAT = auxFAT;
-            printf("            auxFAT %d = %d\n", j, auxFAT);
         }
 
         if(vetBinarioNumB[j] == 1 && j != 0){
-            printf("    auxfadqwd = %d  ", auxFAT);
-            printf("    fatddqqw = %d\n", FAT);
+
             FAT = (auxFAT*FAT*vetBinarioNumB[j])%numC;
-            //FAT = auxFAT;
-            printf("            auxFAT %d = %d\n", j, auxFAT);
         }
 
         FAT *= FAT;
