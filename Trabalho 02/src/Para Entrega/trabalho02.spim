@@ -11,6 +11,7 @@
 	stringEntradaInvalida:  .asciiz "Entradas invalidas."
 	stringNaoEhPrimo1:      .asciiz "O modulo nao eh primo."
 	stringFinal: 		.asciiz "Entrou."	
+	space:                  .asciiz "\n"
 .text
 
 main:
@@ -78,6 +79,11 @@ main:
  	la $a0, stringEntradaInvalida
  	syscall
  	
+ 	#impressao space
+ 	li $v0, 4
+ 	la $a0, space
+ 	syscall
+ 	
  	li $v0, 10 #saida
  	syscall
  	
@@ -121,6 +127,11 @@ impressaoErroPrimoMenor:
 
 	li $v0, 4
  	la $a0, stringNaoEhPrimo1
+ 	syscall
+ 	
+ 	#impressao space
+ 	li $v0, 4
+ 	la $a0, space
  	syscall
  	
  	#saida
@@ -172,6 +183,11 @@ exponenciaco:
 	
 	li $v0, 4
  	la $a0, stringFinal
+ 	syscall
+ 	
+ 	#impressao space
+ 	li $v0, 4
+ 	la $a0, space
  	syscall
  	
  	#saida
