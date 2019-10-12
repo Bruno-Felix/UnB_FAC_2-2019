@@ -114,24 +114,37 @@ void exponenciacao(int numA, int numB, int numC){
 
     transformacaoNumBBinario(vetBinarioNumB, numB);
 
+
     int FAT = numA;
-    int auxFAT = numA;
+    int ACC = 1;
+    int expoente = numA;
+    int FatFinal = 1;
 
-    for(int j = 0; j <= 15; j++){
+    int modFatFinal;
 
-        if(j == 0 && vetBinarioNumB[j] == 1){
+    for(int i = 0; i <= 15; i++){
 
-            auxFAT = (vetBinarioNumB[j]*FAT)%numC;
-            FAT = auxFAT;
+        if(i == 0){
+            
+            FAT = ACC*FAT;
+            //printf("fat[%d]: %d\n", i, FAT);
+        }
+        else{
+
+            FAT = (ACC*FAT*FAT)%numC;
+            //printf("fat[%d]: %d\n", i, FAT);
         }
 
-        if(vetBinarioNumB[j] == 1 && j != 0){
+        if(vetBinarioNumB[i] == 1){
 
-            FAT = (auxFAT*FAT*vetBinarioNumB[j])%numC;
+            /* printf("FatFinal %d: %d\n", i, FAT); */
+            FatFinal *= FAT;
+            FatFinal = FatFinal%numC;
+            printf("        FatFinal: %d\n", FatFinal);
         }
-
-        FAT *= FAT;
     }
 
-    printf("A exponencial modular %d elevado a %d (mod %d) eh %d.\n", numA, numB, numC, auxFAT);
+    /* modFatFinal = FatFinal%numC; */
+
+    printf("A exponencial modular %d elevado a %d (mod %d) eh %d.\n", numA, numB, numC, FatFinal);
 }
