@@ -46,44 +46,45 @@ void verificacaoEntradasValidas(int numA, int numB, int numC){
 
 void verificacaoModuloPrimo(int numC){
 
-    int aux = 0;
+    int contador = 0;
 
-    if(numC <= 256){
-
-        for(int i = 1; i <= numC; i++){
-            
-            if(numC%i == 0){
-                aux++;
-            }
-        }
-        if(aux == 2){
-            aux = 0;
-        }
+    if(numC%2 == 0 && numC > 2){
+        
+        printf("O modulo nao eh primo.\n");
+        exit(1);
     }
     else{
-        
-        for(int i = 1; i < 256; i++){
+        if(numC < 256){
+            for(int i = 3; i < numC; i += 2){
             
-            if(numC%i == 0){
-                aux++;
+                int aux = numC%i;
+
+                if(aux == 0){
+
+                    contador++;
+                }
+            }
+        }
+        else{
+            for(int i = 3; i < 256; i += 2){
+            
+                int aux = numC%i;
+
+                if(aux == 0){
+
+                    contador++;
+                }
             }
         }
 
-        if(aux == 1){
-            aux = 0;
+        if(numC == 1){
+            contador++;
         }
-    }
-    
-    if(numC == 1){
-        aux++;
-    }
-    else if(numC == 2){
-        aux = 0;
-    }
 
-    if(aux != 0){
-        printf("O modulo nao eh primo.\n");
-        exit(3);
+        if(contador != 0){
+            printf("O modulo nao eh primo.\n");
+            exit(1);
+        }
     }
 }
 
@@ -115,10 +116,9 @@ void exponenciacao(int numA, int numB, int numC){
     transformacaoNumBBinario(vetBinarioNumB, numB);
 
 
-    int FAT = numA;
+    unsigned int FAT = numA;
     int ACC = 1;
-    int expoente = numA;
-    int FatFinal = 1;
+    unsigned int FatFinal = 1;
 
     int modFatFinal;
 
