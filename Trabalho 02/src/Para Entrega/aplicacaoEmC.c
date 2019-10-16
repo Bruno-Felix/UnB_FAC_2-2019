@@ -6,6 +6,7 @@ int numeroBits = 16;
 
 void verificacaoEntradasValidas(int numA, int numB, int numC);
 void verificacaoModuloPrimo(int numC);
+void verificacaoModuloPrimoImpar(int numC);
 void transformacaoNumBBinario(int *vetBinarioNumB, int numB);
 void exponenciacao(int numA, int numB, int numC);
 
@@ -48,43 +49,51 @@ void verificacaoModuloPrimo(int numC){
 
     int contador = 0;
 
-    if(numC%2 == 0 && numC > 2){
-        
-        printf("O modulo nao eh primo.\n");
-        exit(1);
-    }
-    else{
-        if(numC < 256){
-            for(int i = 3; i < numC; i += 2){
-            
-                int aux = numC%i;
-
-                if(aux == 0){
-
-                    contador++;
-                }
-            }
-        }
-        else{
-            for(int i = 3; i < 256; i += 2){
-            
-                int aux = numC%i;
-
-                if(aux == 0){
-
-                    contador++;
-                }
-            }
-        }
-
-        if(numC == 1){
-            contador++;
-        }
-
-        if(contador != 0){
+    if(numC%2 == 0){
+        if(numC > 2){
             printf("O modulo nao eh primo.\n");
             exit(1);
         }
+    }
+    else{
+        verificacaoModuloPrimoImpar(numC);
+    }
+}
+
+void verificacaoModuloPrimoImpar(int numC){
+    
+    int contador = 0;
+
+    if(numC < 256){
+        for(int i = 3; i < numC; i += 2){
+        
+            int aux = numC%i;
+
+            if(aux == 0){
+
+                contador++;
+            }
+        }
+    }
+    else{
+        for(int i = 3; i < 256; i += 2){
+        
+            int aux = numC%i;
+
+            if(aux == 0){
+
+                contador++;
+            }
+        }
+    }
+
+    if(numC == 1){
+        contador++;
+    }
+
+    if(contador != 0){
+        printf("O modulo nao eh primo.\n");
+        exit(1);
     }
 }
 
@@ -98,11 +107,11 @@ void transformacaoNumBBinario(int *vetBinarioNumB, int numB){
         descolamento = auxNumB >> i;
             
         if(descolamento & 1) {
-            printf("1");
+            //printf("1");
             vetBinarioNumB[i] = 1;
         }
         else {
-            printf("0");
+            //printf("0");
             vetBinarioNumB[i] = 0;
         }
     }
@@ -140,7 +149,7 @@ void exponenciacao(int numA, int numB, int numC){
             /* printf("FatFinal %d: %d\n", i, FAT); */
             FatFinal *= FAT;
             FatFinal = FatFinal%numC;
-            printf("        FatFinal: %d\n", FatFinal);
+            //printf("        FatFinal: %d\n", FatFinal);
         }
     }
 
