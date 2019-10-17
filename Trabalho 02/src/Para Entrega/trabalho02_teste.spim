@@ -155,7 +155,7 @@ exponenciacao:
  	addi $t1, $zero, 0 #indice
  	addu $t2,$zero, $s0 #FAT
  	addi $t3,$zero, 1 #FatFinal
- 	add $t5,$zero,$s1
+ 	add $t5,$zero,$s1 #$t5 recebe $s1, pois precisamos do valor de $s1 intacto
  	
 forExponenciacao:
 	#for i=0 até menor que 16 (16bits)
