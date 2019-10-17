@@ -163,15 +163,13 @@ forExponenciacao:
  	beq $t1,16,Saida #for i=0 até menor que 16
  	
  	and $t0,$t5,0x01
- 	li $v0, 1
- 	move $a0, $t0
- 	syscall
+ 	
  	srl $t5,$t5,1
  	
  	beq $t1,0,primeiroCaso #i=0
  	
- 	mulu $t2,$t2,$t2	#FAT = FAT*FAT
- 	
+ 	multu $t2,$t2	#FAT = FAT*FAT
+ 	mflo $t2
  	divu $t2,$s2		#FAT = FAT*FAT/modC
  	
  	mfhi $t4
@@ -190,8 +188,8 @@ forExponenciacao:
  	bne $t0,$zero,multipl	#se t0 for 1 entra em multiplicacao
  		j forExponenciacao 
  multipl:
- 	mulu $t3,$t2,$t3	#FatFinal = FAT*FatFinal
- 	
+ 	multu $t2,$t3	#FatFinal = FAT*FatFinal
+ 	mflo $t3
  	divu $t3,$s2		#FAT*FatFInal/modC
  	
  	mfhi $t4
