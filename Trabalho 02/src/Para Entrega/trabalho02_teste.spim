@@ -159,8 +159,15 @@ exponenciacao:
  	
 forExponenciacao:
 	#for i=0 até menor que 16 (16bits)
+ 	
  	beq $t1,16,Saida #for i=0 até menor que 16
- 	andi $t0,$s1,1	
+ 	
+ 	and $t0,$t5,0x01
+ 	li $v0, 1
+ 	move $a0, $t0
+ 	syscall
+ 	srl $t5,$t5,1
+ 	
  	beq $t1,0,primeiroCaso #i=0
  	
  	mulu $t2,$t2,$t2	#FAT = FAT*FAT
@@ -174,14 +181,14 @@ forExponenciacao:
  	addi $t1,$t1,1
  	
  	bne $t0,$zero,multipl	#se t0 for 1 entra em multiplicacao
- 	
+ 		j forExponenciacao 
  primeiroCaso:
  	add $t2,$zero, $t2	#FAT = FAT
  	
  	addi $t1,$t1,1
  	
  	bne $t0,$zero,multipl	#se t0 for 1 entra em multiplicacao
- 	
+ 		j forExponenciacao 
  multipl:
  	mulu $t3,$t2,$t3	#FatFinal = FAT*FatFinal
  	
@@ -191,7 +198,6 @@ forExponenciacao:
  	
  	add $t3,$zero,$t4      #FAT*FatFinal % modC
  	
- 	srl $t6,$t5,1		#deslocamento  $t5 recebe $s1
  	
  	j forExponenciacao 
  		

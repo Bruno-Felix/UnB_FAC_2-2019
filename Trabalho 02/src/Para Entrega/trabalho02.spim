@@ -11,6 +11,8 @@
 	stringEntradaInvalida:  .asciiz "Entradas invalidas."
 	stringNaoEhPrimo1:      .asciiz "O modulo nao eh primo."
 	stringFinal: 		.asciiz "Entrou."	
+	stringMaior:		.asciiz "Maior"
+	stringMenor:		.asciiz "Menor"
 	space:                  .asciiz "\n"
 .text
 
@@ -68,7 +70,7 @@ main:
 	slt $t1, $s2, $t0 #Se modulo é maior ou menor que 256
 	
 	bne $t1, $0, forPrimoMenor256 #Se módulo for menor que 256, entra em forPrimoMenor256
-		jal forPrimoMenor256 #Se módulo for maior que 256, entra em forPrimoMaior256
+		jal forPrimoMaior256 #Se módulo for maior que 256, entra em forPrimoMaior256
 	
 	li $v0, 10 #saida, fim de programa na Main
  	syscall
@@ -90,6 +92,7 @@ main:
  	
 forPrimoMenor256:
 
+ 	
  	beq $t4,$t6,validacaoPrimoMenor256 #enquanto $t4 != 256($t0), laço forPrimo funciona
  	
  	div $t3,$s2,$t4 #divisao entre o módulo e o indice ($s2 / $t4)
@@ -107,6 +110,10 @@ forPrimoMenor256:
  
  
 validacaoPrimoMenor256:
+
+	li $v0, 4
+ 	la $a0, stringMenor
+ 	syscall
  	
 	li $t4, 2 #auxiliar
 	
@@ -141,6 +148,7 @@ impressaoErroPrimoMenor:
  													
 forPrimoMaior256:
  
+ 	
  	beq $t4,$0,validacaoPrimoMaior256
  	
  		
@@ -158,6 +166,10 @@ forPrimoMaior256:
 
 
 validacaoPrimoMaior256:
+
+	li $v0, 4
+ 	la $a0, stringMaior
+ 	syscall
 		
 	li $t4, 1 #auxiliar
 		
