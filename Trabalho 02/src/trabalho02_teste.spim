@@ -61,6 +61,7 @@ main:
 
 	addi $t0, $zero, 256 #Limite do laco forPrimoMaior
 	add $t6, $zero, $s2  #Limite do laco forPrimoMenor
+	li $t4, 3#Indice do laco forPrimoMaior
 	
 	li $t5, 0 #contador
 	
@@ -83,6 +84,7 @@ main:
 
 		slt $t1, $s2, $t0 #Se modulo eh maior ou menor que 256
 		bne $t1, $0, forPrimoMenor256 #Se modulo for menor que 256, entra em forPrimoMenor256
+			li $t4, 3#Indice do laco forPrimoMaior
 			jal forPrimoMaior256 #Se modulo for maior que 256, entra em forPrimoMaior256
 		
 		li $v0, 10 #saida, fim de programa na Main
@@ -103,7 +105,7 @@ forPrimoMenor256:
  		
  	li $t4, 3
  	auxforPrimoMenor:
- 		beq $t4,$t6,validacaoPrimo #enquanto $t4 != 256($t0), laco forPrimo funciona
+ 		beq $t4, $t6, validacaoPrimo #enquanto $t4 != 256($t0), laco forPrimo funciona
  	
  	
  		div $t3,$s2,$t4 #divisao entre o modulo e o indice ($s2 / $t4)
@@ -120,11 +122,10 @@ forPrimoMenor256:
  														
 forPrimoMaior256:
  
- 	beq $t4,$0,validacaoPrimo
+ 	beq $t4,257,validacaoPrimo
  	
- 
- 	div $t6,$s2,$t4 #divisao entre o modulo e o indice ($s2 / $t4)	 	mfhi $t7 #resto da divisÃ£o
- 	mfhi $t7 #resto da divisÃ£o
+ 	div $t3,$s2,$t4 #divisao entre o modulo e o indice ($s2 / $t4)	 	mfhi $t7 #resto da divisÃ£o
+ 	mfhi $t7 #resto da divisao
 	
 	add $t4,$t4,2 #incremento de indice ($t4)
 	 	
@@ -132,7 +133,6 @@ forPrimoMaior256:
  		j forPrimoMaior256 #Se resto($t7) for diferente de 0,volta a fazer o laco forPrimoMaior256
  	
  	auxFor2:
- 		
  		add $t5,$t5,1 #Incrementado do auxiliar
  		jal forPrimoMaior256 #volta a fazer o laco forPrimoMenor256
 	
