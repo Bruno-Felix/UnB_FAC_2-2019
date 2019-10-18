@@ -14,21 +14,21 @@
 .text
 
 main:
-	#Leitura dos numeros:
+	#Leitura das Entradas:
 	
-	#leitura base
+	#Leitura Base
  	li $v0, 5
  	sw $v0, base
  	syscall
  	move $s0, $v0
 
- 	#leitura expoente
+ 	#Leitura Expoente
  	li $v0, 5
  	sw $v0, expoente
  	syscall
  	move $s1, $v0
  	
- 	#leitura modulo
+ 	#Leitura Modulo
  	li $v0, 5
  	sw $v0, modulo
  	syscall
@@ -36,56 +36,63 @@ main:
 	
 	
 	#Verificacao da Validacao das Entradas:
+	#	1 - Entradas devem estar no intervalo (0 < entrada <= 65535);
+	#	2 - O modulo deve ser um numero primo.
 	
-	addi $t0, $zero, 32767 #Preparando $9 para comparar com as entradas e constatar se sao menores ou iguais que 65535
+	addi $t0, $zero, 32767 #Preparando $t0 para comparar com as entradas e constatar se sao menores que 65535
 	addi $t0, $t0, 32767
 	addi $t0, $t0, 2 # t0 -> 32767 + 32767 + 2 = 65356 
 	
-	slt $t3, $0, $s0 #Verificar se a base eh maior que 0,
-	beq $t2, $t3, imprimirErroEntradaInvalida #Caso seja menor ou igual a 0, imprimirErroEntradaInvalida
-	slt $t3, $s0, $t0 #Verificar se a base eh menor que 65536
-	beq $t3, $zero, imprimirErroEntradaInvalida #Caso seja maior que 65536, imprimirErroEntradaInvalida
+
+	#		1 - Entradas Válidas:
+
+	#Verificação Base:
+	slt $t3, $0, $s0 #Verificar se a base eh maior que 0;
+	beq $t2, $t3, imprimirErroEntradaInvalida #Caso seja menor ou igual a 0, imprimirErroEntradaInvalida;
+	slt $t3, $s0, $t0 #Verificar se a base eh menor que 65536;
+	beq $t3, $zero, imprimirErroEntradaInvalida #Caso seja maior que 65535, imprimirErroEntradaInvalida.
 	
-	slt $t3, $0, $s1 #Verificar se o expoente eh maior que 0,
-	beq $t2, $t3, imprimirErroEntradaInvalida #Caso seja menor ou igual a 0, imprimirErroEntradaInvalida
-	slt $t3, $s1, $t0 #Verificar se o expoente eh menor que 65536
-	beq $t3, $zero, imprimirErroEntradaInvalida #Caso seja maior que 65536, imprimirErroEntradaInvalida
+	#Verificação Expoente:
+	slt $t3, $0, $s1 #Verificar se o expoente eh maior que 0;
+	beq $t2, $t3, imprimirErroEntradaInvalida #Caso seja menor ou igual a 0, imprimirErroEntradaInvalid;
+	slt $t3, $s1, $t0 #Verificar se o expoente eh menor que 65536;
+	beq $t3, $zero, imprimirErroEntradaInvalida #Caso seja maior que 65535, imprimirErroEntradaInvalida.
 	
-	slt $t3, $0, $s2 #Verificar se o modulo eh maior que 0,
-	beq $t2, $t3, imprimirErroEntradaInvalida #Caso seja menor ou igual a 0, imprimirErroEntradaInvalida
-	slt $t3, $s2, $t0 #Verificar se o modulo eh menor que 65536
-	beq $t3, $zero, imprimirErroEntradaInvalida #Caso seja maior que 65536, imprimirErroEntradaInvalida
+	#Verificação Modulo:
+	slt $t3, $0, $s2 #Verificar se o modulo eh maior que 0;
+	beq $t2, $t3, imprimirErroEntradaInvalida #Caso seja menor ou igual a 0, imprimirErroEntradaInvalida;
+	slt $t3, $s2, $t0 #Verificar se o modulo eh menor que 65536;
+	beq $t3, $zero, imprimirErroEntradaInvalida #Caso seja maior que 65535, imprimirErroEntradaInvalida.
 	
 	
-	#Verificacao se o Modulo eh um Numero Primo:
+	#	2 - Modulo Primo:
 
 	addi $t0, $zero, 256 #Limite do laco forPrimoMaior
 	add $t6, $zero, $s2  #Limite do laco forPrimoMenor
 	li $t4, 3#Indice do laco forPrimoMaior
 	
-	li $t5, 0 #contador
+	li $t5, 0 #Contador
 	
-	#Verificar se o Modulo eh par:
-	
-	li $t2, 2
-	div $t3,$s2,$t2 #divisao entre o modulo e 2
+	#Verificar se o Modulo eh par ou impar:
+	li $t2, 2 #$t2 igual a 2
+	div $t3,$s2,$t2 #divisao entre o modulo e o numero 2($t2)
  	mfhi $t7 #resto da divisao
  	
- 	bne $t7, $0, moduloImpar #Se resto da divisao for igual a 0
-		jal moduloPar #Se resto da divisao for diferente que 0
+ 	bne $t7, $0, moduloImpar #Se resto da divisao($t7) for diferente de 0, ou seja, impar, entra em moduloImpar
+		jal moduloPar #Se resto da divisao($t7) for igual a 0, ou seja, par, entra em moduloPar
 		
 	moduloPar:
  		
- 		slt $t1, $t2, $s2 #Se modulo e maior ou menor que 2
- 		bne $t1, $0, impressaoErroPrimo #Se modulo for menor que 2, entra em forPrimoMenor256
-			jal moduloImpar #Se modulo for maior que 256, 2 em forPrimoMaior256
+ 		slt $t1, $t2, $s2 #Verifica se modulo eh maior ou menor que 2($t2)
+ 		bne $t1, $0, impressaoErroPrimo #Se modulo for maior que 2, imprimirErroEntradaInvalida
+			jal moduloImpar #Se modulo for menor ou igual a 2, entra moduloImpar
 
 	moduloImpar:
 
-		slt $t1, $s2, $t0 #Se modulo eh maior ou menor que 256
-		bne $t1, $0, forPrimoMenor256 #Se modulo for menor que 256, entra em forPrimoMenor256
+		slt $t1, $s2, $t0 #Verifica se modulo eh maior ou menor que 256($t0)
+		bne $t1, $0, forPrimoMenor256 #Se modulo for menor que 256($t0), entra em forPrimoMenor256
 			li $t4, 3#Indice do laco forPrimoMaior
-			jal forPrimoMaior256 #Se modulo for maior que 256, entra em forPrimoMaior256
+			jal forPrimoMaior256 #Se modulo for maior que 256($t0), entra em forPrimoMaior256
 		
 		li $v0, 10 #saida, fim de programa na Main
  		syscall	
@@ -97,52 +104,59 @@ main:
 	
 forPrimoMenor256:
  	
- 	li $t4, 1
- 	beq $t4, $t6, validacaoPrimo
+ 	li $t4, 1 #$t4 igual a 1
+ 	beq $t4, $t6, validacaoPrimo #Se modulo for igual a 1($t4), entra em validacaoPrimo
  	
- 	li $t4, 2
- 	beq $t4, $t6, validacaoPrimo
+ 	li $t4, 2 #$t4 igual a 2
+ 	beq $t4, $t6, validacaoPrimo #Se modulo for igual a 2($t4), entra em validacaoPrimo
  		
- 	li $t4, 3
+ 	li $t4, 3 #$t4 igual a 3, indice do laco auxforPrimoMenor
+
+	#Laco for de 3 até modulo($t6) com incremento de +2 no indice($t4):
  	auxforPrimoMenor:
- 		beq $t4, $t6, validacaoPrimo #enquanto $t4 != 256($t0), laco forPrimo funciona
- 	
+ 		beq $t4, $t6, validacaoPrimo #Caso indice($t4) != modulo($t6), laco auxforPrimoMenor funciona
+									 #Caso indice($t4) == modulo($t6), entra em validacaoPrimo
  	
  		div $t3,$s2,$t4 #divisao entre o modulo e o indice ($s2 / $t4)
 	 	mfhi $t7 #resto da divisao
  	
-	 	add $t4,$t4,2 #incremento de indice ($t4)
+	 	add $t4,$t4,2 #incremento de indice($t4)
 	 	
- 		beq $t7, $zero, auxFor1 #Se resto($t7) for igual 0,auxiliar eh incrementado o auxiliar e volta pro laco forPrimoMenor256
- 			j auxforPrimoMenor #Se resto($t7) for diferente de 0,volta a fazer o laÃ§o forPrimoMenor256
+ 		beq $t7, $zero, auxFor1 #Se resto($t7) for igual 0, entra auxFor1
+ 			j auxforPrimoMenor #Se resto($t7) for diferente de 0, retorna a fazer laco auxforPrimoMenor
  	
 		auxFor1:
-			add $t5,$t5,1 #Incrementado do auxiliar
-			j auxforPrimoMenor #volta a fazer o laco forPrimoMenor256
- 														
+			add $t5,$t5,1 #Incrementa o contador($t5)
+			j auxforPrimoMenor #Retorna a fazer laco auxforPrimoMenor
+
+
+#Laco for de 3 até 255(Ultimo impar menor que 256) com incremento de +2 no indice($t4):
 forPrimoMaior256:
  
- 	beq $t4,257,validacaoPrimo
+ 	beq $t4,257,validacaoPrimo #Caso indice($t4) != 257, laco forPrimoMaior256 funciona
+							   #Caso indice($t4) == 257, entra em validacaoPrimo
  	
- 	div $t3,$s2,$t4 #divisao entre o modulo e o indice ($s2 / $t4)	 	mfhi $t7 #resto da divisÃ£o
+ 	div $t3,$s2,$t4 #divisao entre o modulo e o indice ($s2 / $t4)
  	mfhi $t7 #resto da divisao
 	
 	add $t4,$t4,2 #incremento de indice ($t4)
 	 	
-	beq $t7, $zero, auxFor2 #Se resto($t7) for igual 0,auxiliar eh incrementado o auxiliar e volta pro laco forPrimoMenor256	 	j forPrimoMaior256 #Se resto($t7) for diferente de 0,volta a fazer o laÃ§o forPrimoMenor256
- 		j forPrimoMaior256 #Se resto($t7) for diferente de 0,volta a fazer o laco forPrimoMaior256
+	beq $t7, $zero, auxFor2 #Se resto($t7) for igual 0, entra auxFor2
+ 		j forPrimoMaior256 #Se resto($t7) for diferente de 0, retorna a fazer laco forPrimoMaior256
  	
  	auxFor2:
- 		add $t5,$t5,1 #Incrementado do auxiliar
- 		jal forPrimoMaior256 #volta a fazer o laco forPrimoMenor256
+ 		add $t5,$t5,1 #Incrementa o contador($t5)
+ 		jal forPrimoMaior256 #Retorna a fazer laco forPrimoMaior256
 	
+
+#Final da verificacao se modulo eh primo:	
 validacaoPrimo:
  	
- 	li $t4, 1
- 	beq $t6, $t4, impressaoErroPrimo
+ 	li $t4, 1 #$t4 igual a 1
+ 	beq $t6, $t4, impressaoErroPrimo #Se modulo for igual a 1($t4), entra em impressaoErroPrimo
  	
- 	beq $t5, $0, exponenciacao #Se modulo for menor que 2, entra em forPrimoMenor256
-		jal impressaoErroPrimo #Se modulo for maior que 256, 2 em forPrimoMaior256
+ 	beq $t5, $0, exponenciacao #Se contador for igual a 0, entra exponenciacao
+		jal impressaoErroPrimo #Se contador for diferente que 0, impressaoErroPrimo
  	
  	#saida
  	li $v0, 10
@@ -180,6 +194,8 @@ forExponenciacao:
  	
  	bne $t0,$zero,multipl	#se t0 for 1 entra em multiplicacao
  		j forExponenciacao 
+
+
  primeiroCaso:
  	add $t2,$zero, $t2	#FAT = FAT
  	
@@ -187,6 +203,8 @@ forExponenciacao:
  	
  	bne $t0,$zero,multipl	#se t0 for 1 entra em multiplicacao
  		j forExponenciacao 
+
+
  multipl:
  	multu $t2,$t3	#FatFinal = FAT*FatFinal
  	mflo $t3
@@ -196,11 +214,12 @@ forExponenciacao:
  	
  	add $t3,$zero,$t4      #FAT*FatFinal % modC
  	
- 	
  	j forExponenciacao 
- 		
+
+
+#Impressao do Resultado (base^expoente) mod modulo:
 Saida:
- 	#impressao resultado calculo exponencial
+ 	
 	li $v0, 4
  	la $a0, string
  	syscall
@@ -237,7 +256,6 @@ Saida:
  	la $a0, stringPonto
  	syscall
  	
- 	#impressao space
  	li $v0, 4
  	la $a0, space
  	syscall
@@ -247,7 +265,7 @@ Saida:
  	syscall
  	
  
-#impressao String Entradas InvÃ¡lidas
+#impressao String Entradas Invalidas
 imprimirErroEntradaInvalida:
  	li $v0, 4	
  	la $a0, stringEntradaInvalida
