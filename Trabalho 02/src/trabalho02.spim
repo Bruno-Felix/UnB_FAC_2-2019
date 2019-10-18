@@ -44,7 +44,7 @@ main:
 	addi $t0, $t0, 2 # t0 -> 32767 + 32767 + 2 = 65356 
 	
 
-	#		1 - Entradas Válidas:
+	#	1 - Entradas Válidas:
 
 	#Verificação Base:
 	slt $t3, $0, $s0 #Verificar se a base eh maior que 0;
