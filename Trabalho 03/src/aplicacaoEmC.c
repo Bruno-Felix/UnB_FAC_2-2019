@@ -129,16 +129,16 @@ void calc_raiz(int numero, int erro, int *a0, int *b0, float *raiz, int *interac
 
             bInt = numero/ aInt;
 
-            printf("aInt %d: %f\n", auxInteracoes, aInt);
-            printf("bInt %d: %f\n", auxInteracoes, bInt);
+            printf("aInt %d: %.13f\n", auxInteracoes, aInt);
+            printf("bInt %d: %.13f\n", auxInteracoes, bInt);
         }
         else{
 
             aInt = (aInt + bInt)/2;
 
             bInt = (numero/ aInt);
-            printf("aInt %d: %f\n", auxInteracoes, aInt);
-            printf("bInt %d: %f\n", auxInteracoes, bInt);
+            printf("aInt %d: %.13f\n", auxInteracoes, aInt);
+            printf("bInt %d: %.13f\n", auxInteracoes, bInt);
         }
 
         *interacoes = auxInteracoes;
