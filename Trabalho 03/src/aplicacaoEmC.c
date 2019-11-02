@@ -23,13 +23,11 @@ int main(){
     int b0 = 0;
     
     encontra_inteiros(numero, &a0, &b0);
-
-    /* printf("a0: %d\n", a0);
-    printf("b0: %d\n", b0); */
     
     calc_raiz(numero, erro, &a0, &b0, &interacoes);
 
-    
+    /* printf("a0: %d\n", a0);
+    printf("b0: %d\n", b0); */
     //printf("interacoes: %d\n", interacoes);
 
     return 0;
@@ -116,7 +114,7 @@ void calc_raiz(int numero, int erro, int *a0, int *b0, int *interacoes){
     double raiz;
 
     double auxPrecisao = pow(10, -(erro));
-    printf("%.16lf\n", auxPrecisao);
+    //printf("%.16lf\n", auxPrecisao);
 
     int auxInteracoes = 1;
     while(*interacoes != 0){
@@ -174,7 +172,7 @@ void imprime_saida(int numero, double raiz, int **interacoes){
 
 void validacao_interacoes(int numero, int interacoes){
     
-    printf("interacoes: %d\n", interacoes);
+    //printf("interacoes: %d\n", interacoes);
     if(interacoes > 100){
 
         printf("Nao foi possivel calcular sqrt(%d).\n", numero);
