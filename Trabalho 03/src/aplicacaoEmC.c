@@ -2,66 +2,63 @@
 #include <stdlib.h>
 #include <math.h>
 
-void encontra_inteiros(int numero, int *a0, int *b0);
-void validacao_entradas(int numero, int erro);
-void calc_raiz(int numero, int erro, int *a0, int *b0, int *interacoes);
-void imprime_saida(int numero, double raiz, int **interacoes);
-void validacao_interacoes(int numero, int interacoes);
+
+void encontrarInteirosA0eB0(int numero, int *inteiroA0, int *inteiroB0);
+void validacaoEntradas(int numero, int precisao);
+void calcularRaiz(int numero, int precisao, int *inteiroA0, int *inteiroB0, int *interacoes);
+void validacaoInteracoes(int numero, int **interacoes);
+void imprimirSaida(int numero, double raiz, int **interacoes);
 
 
 int main(){
 
-    unsigned int numero, erro;
+    int numero, precisao;
     int interacoes = 1;
 
     scanf("%d", &numero); //numero a ser calculado a raiz
-    scanf("%d", &erro); //erro de aproximação
+    scanf("%d", &precisao); //precisao de aproximação
 
-    validacao_entradas(numero, erro);
+    validacaoEntradas(numero, precisao);
 
-    int a0 = 0;
-    int b0 = 0;
+    int inteiroA0;
+    int inteiroB0;
     
-    encontra_inteiros(numero, &a0, &b0);
+    encontrarInteirosA0eB0(numero, &inteiroA0, &inteiroB0);
     
-    calc_raiz(numero, erro, &a0, &b0, &interacoes);
-
-    /* printf("a0: %d\n", a0);
-    printf("b0: %d\n", b0); */
-    //printf("interacoes: %d\n", interacoes);
+    calcularRaiz(numero, precisao, &inteiroA0, &inteiroB0, &interacoes);
 
     return 0;
 }
 
 
-void validacao_entradas(int numero, int erro){
+void validacaoEntradas(int numero, int precisao){
     
     if(numero <= 1){
 
         printf("Entradas invalidas.\n");
         exit(1);
     }
-    if(erro < 1 || erro > 16){
+    if(precisao < 1 || precisao > 16){
 
         printf("Entradas invalidas.\n");
         exit(2);
     }
 }
 
-void encontra_inteiros(int numero, int *a0, int *b0){
+void encontrarInteirosA0eB0(int numero, int *inteiroA0, int *inteiroB0){
 
     if(numero <= 100){
 
         for(int i = 0; i <= 10; i++){
             if( ((i+1)*(i+1)) > numero){
                 
-                *b0 = i+1;
+                *inteiroB0 = i+1;
 
                 if(i*i == numero){
-                    *a0 = i-1;
+                    *inteiroA0 = i-1;
                 }
                 else{
-                    *a0 = i;
+                    *inteiroA0 = i;
                 }
                 
                 break;
@@ -74,13 +71,13 @@ void encontra_inteiros(int numero, int *a0, int *b0){
         for(int i = 10; i <= 20; i++){
             if( ((i+1)*(i+1)) > numero){
                 
-                *b0 = i+1;
+                *inteiroB0 = i+1;
 
                 if(i*i == numero){
-                    *a0 = i-1;
+                    *inteiroA0 = i-1;
                 }
                 else{
-                    *a0 = i;
+                    *inteiroA0 = i;
                 }
                 
                 break;
@@ -92,13 +89,13 @@ void encontra_inteiros(int numero, int *a0, int *b0){
         for(int i = 20; i <= 30; i++){
             if( ((i+1)*(i+1)) > numero){
                 
-                *b0 = i+1;
+                *inteiroB0 = i+1;
 
                 if(i*i == numero){
-                    *a0 = i-1;
+                    *inteiroA0 = i-1;
                 }
                 else{
-                    *a0 = i;
+                    *inteiroA0 = i;
                 }
                 
                 break;
@@ -107,75 +104,61 @@ void encontra_inteiros(int numero, int *a0, int *b0){
     }
 }
 
-void calc_raiz(int numero, int erro, int *a0, int *b0, int *interacoes){
+void calcularRaiz(int numero, int precisao, int *inteiroA0, int *inteiroB0, int *interacoes){
 
-    double aInt;
-    double bInt;
+    double inteiroA;
+    double inteiroB;
     double raiz;
 
-    double auxPrecisao = pow(10, -(erro));
-    //printf("%.16lf\n", auxPrecisao);
+    double auxPrecisao = pow(10, -(precisao));
 
-    int auxInteracoes = 1;
     while(*interacoes != 0){
-        
-        validacao_interacoes(numero, auxInteracoes);
 
-        if(auxInteracoes == 1){
+        if(*interacoes == 1){
 
-            aInt = *a0;
+            inteiroA = *inteiroA0;
 
-            bInt = numero/ aInt;
-
-            /* printf("a(%d): %.13lf\n", auxInteracoes, aInt);
-            printf("b(%d): %.13lf\n", auxInteracoes, bInt);
-            printf("diferenca: %.13lf\n", bInt - aInt); */
+            inteiroB = numero / inteiroA;
         }
         else{
 
-            aInt = (aInt + bInt)/2;
+            inteiroA = (inteiroA + inteiroB) / 2;
 
-            bInt = (numero/ aInt);
-            /* printf("a(%d): %.13lf\n", auxInteracoes, aInt);
-            printf("b(%d): %.13lf\n", auxInteracoes, bInt);
-            printf("diferenca: %.13lf\n", bInt - aInt); */
+            inteiroB = (numero / inteiroA);
         }
 
-        double diferenca = bInt - aInt;
-        if(diferenca < 0){
-            diferenca *= -1;
+
+        double diferencaEntreAeB = inteiroB - inteiroA;
+        if(diferencaEntreAeB < 0){
+            diferencaEntreAeB *= -1;
         }
 
-        if(diferenca <= auxPrecisao){
+        if(diferencaEntreAeB <= auxPrecisao){
 
-            raiz = bInt;
+            raiz = inteiroB;
 
-            *interacoes = auxInteracoes;
-            //validacao_interacoes(numero, &interacoes);
-
-            imprime_saida(numero, raiz, &interacoes);
+            imprimirSaida(numero, raiz, &interacoes);
         }
         else{
 
-            *interacoes = auxInteracoes;
-            //validacao_interacoes(numero, &interacoes);
-            auxInteracoes++;
+            *interacoes += 1;
+
+            validacaoInteracoes(numero, &interacoes);
         }
     }
 }
 
-void imprime_saida(int numero, double raiz, int **interacoes){
-
-    printf("A raiz quadrada de %d eh %.15lf, calculada em %d iteracoes.\n", numero, raiz, **interacoes);
-    exit(4);
-}
-
-void validacao_interacoes(int numero, int interacoes){
+void validacaoInteracoes(int numero, int **interacoes){
     
-    //printf("interacoes: %d\n", interacoes);
-    if(interacoes > 100){
+    if(**interacoes > 100){
 
         printf("Nao foi possivel calcular sqrt(%d).\n", numero);
         exit(3);
     }
+}
+
+void imprimirSaida(int numero, double raiz, int **interacoes){
+
+    printf("A raiz quadrada de %d eh %.15lf, calculada em %d iteracoes.\n", numero, raiz, **interacoes);
+    exit(4);
 }
