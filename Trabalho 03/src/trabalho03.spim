@@ -1,0 +1,144 @@
+.data
+	numero: .word 0
+	aproximacao: .word 0
+	
+	stringEntradaInvalida:	.asciiz "Entradas invalidas."
+	
+	stringErroInteracoes1:  .asciiz "Nao foi possivel calcular sqrt("
+	stringErroInteracoes2:  .asciiz ")."
+	
+	stringSaida1:           .asciiz "A raiz quadrada de "
+	stringSaida2:           .asciiz " eh "
+	stringSaida3:  		.asciiz ", calculada em "
+	stringSaida4:   	.asciiz " iteracoes."
+	
+	space:                  .asciiz "\n"
+	
+	stringFeito:		.asciiz "Saiu.\n"
+	string100:		.asciiz "string100.\n"
+	string400:		.asciiz "string400.\n"
+	string900:		.asciiz "string900.\n"
+	string1600:		.asciiz "string1600.\n"
+	string2500:		.asciiz "string2500.\n"
+.text
+
+main:
+
+	#Leitura das Entradas:
+	
+	#Leitura Numero
+ 	li $v0, 5
+ 	sw $v0, numero
+ 	syscall
+ 	move $s0, $v0
+
+ 	#Leitura Aproximacao
+ 	li $v0, 5
+ 	sw $v0, aproximacao
+ 	syscall
+ 	move $s1, $v0
+ 	
+ 	j validacaoEntradas
+ 	
+ 	
+validacaoEntradas:
+	 	
+	#Verificacao da Validacao das Entradas:
+ 	li $t0, 1
+ 	slt $t1, $t0, $s0
+ 	beq $t2, $t1, imprimirErroEntradaInvalida 
+ 	
+ 	li $t0, 0
+ 	slt $t1, $t0, $s1
+ 	beq $t2, $t1, imprimirErroEntradaInvalida
+ 	li $t0, 17
+ 	slt $t1, $s1, $t0
+ 	beq $t2, $t1, imprimirErroEntradaInvalida
+ 	
+ 	j encontrarInteirosA0eB0
+ 	
+ 	 	
+encontrarInteirosA0eB0:
+
+	li $t0, 101
+	slt $t1, $s0, $t0
+	bne $t2, $t1, numeroAte100
+		li $t0, 401
+		slt $t1, $s0, $t0
+		bne $t2, $t1, numeroAte400
+			li $t0, 901
+			slt $t1, $s0, $t0
+			bne $t2, $t1, numeroAte900
+				li $t0, 1601
+				slt $t1, $s0, $t0
+				bne $t2, $t1, numeroAte1600
+					li $t0, 2501
+					slt $t1, $s0, $t0
+					bne $t2, $t1, numeroAte2500
+						li $v0, 10 #saida
+ 						syscall
+			
+	numeroAte100:
+	
+		#impressao space
+ 		li $v0, 4
+ 		la $a0, string100
+ 		syscall
+			
+ 		li $v0, 10 #saida
+ 		syscall
+ 		
+	numeroAte400:
+		
+		#impressao space
+ 		li $v0, 4
+ 		la $a0, string400
+ 		syscall
+ 		
+ 		li $v0, 10 #saida
+ 		syscall
+	
+	numeroAte900:
+	
+		#impressao space
+ 		li $v0, 4
+ 		la $a0, string900
+ 		syscall
+
+ 		li $v0, 10 #saida
+ 		syscall
+ 		
+ 	numeroAte1600:
+	
+		#impressao space
+ 		li $v0, 4
+ 		la $a0, string1600
+ 		syscall
+
+ 		li $v0, 10 #saida
+ 		syscall
+ 		
+ 	numeroAte2500:
+	
+		#impressao space
+ 		li $v0, 4
+ 		la $a0, string2500
+ 		syscall
+ 		
+ 		li $v0, 10 #saida
+ 		syscall
+
+imprimirErroEntradaInvalida:
+
+	#impressao space
+ 	li $v0, 4
+ 	la $a0, stringEntradaInvalida
+ 	syscall
+ 	
+ 	#impressao space
+ 	li $v0, 4
+ 	la $a0, space
+ 	syscall
+ 	
+ 	li $v0, 10 #saida
+ 	syscall

@@ -1,0 +1,14 @@
+Uso dos Registradores:
+
+$s0 - Numero;
+$s1 - Aproximacao;
+
+$t0 - numero para comparar com as entradas, validacao entrada (temporário)
+$t1 - saida de slt, validacao entrada (temporário)
+$t2 - saida de beq, validacao entrada (temporário)
+
+$s2 - inteiroA0;
+$s3 - inteiroA0;
+$t0 - comparar entrada, encontrarInteirosA0eB0 (temporário)
+$t1 - saida de slt, encontrarInteirosA0eB0 (temporário);
+$t2 - saida de beq, encontrarInteirosA0eB0 (temporário);
