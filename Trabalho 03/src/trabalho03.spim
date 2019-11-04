@@ -1,6 +1,12 @@
 .data
 	numero: .word 0
 	aproximacao: .word 0
+	num1: .double 0.0 #inicializando inteiroA
+	num2: .double 0.0 #inicializando inteiroB
+	num3: .double 0.0 #inicializando auxPrecisao
+	num4: .double 2.0 #para divisao por 2
+	num5: .double -1.0 
+	num6: .double 0.0 #inicializando raiz
 	
 	stringEntradaInvalida:	.asciiz "Entradas invalidas."
 	
@@ -57,9 +63,8 @@ validacaoEntradas:
  	beq $t2, $t1, imprimirErroEntradaInvalida
  	
  	j encontrarInteirosA0eB0
- 
  	
- 		
+ 	 	
 encontrarInteirosA0eB0:
 
 	li $t0, 101
@@ -77,48 +82,28 @@ encontrarInteirosA0eB0:
 					li $t0, 2501
 					slt $t1, $s0, $t0
 					bne $t2, $t1, numeroAte2500
-						li $v0, 10 #saida
- 						syscall
 			
 	numeroAte100:
-	
-	li $v0, 4
- 	la $a0, string100
- 	syscall
- 	
- 	li $t0, 1
- 	
 		for100:
 			li $t3, 0 #contador i
 			
-			beq $t3, 11, exit #vai para outra funcao
-			
+			beq $t3, 10, calcularRaiz #vai para outra funcao
 			addi $t4,$t3,1 # (i+1)
 			mul $t5,$t4,$t4 # (i+1)*(i+1)
 			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
-			beq $t6, 1, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			beq $t6, $zero, calcularRaiz # saio do if - if(((i+1)*(i+1)) > numero)
 			
-			li $v0, 4
- 			la $a0, string400
-		 	syscall
- 	
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
-			li $v0, 1
- 			move $a0, $s2
-		 	syscall
-			
 			mul $t5, $t3,$t3 # $t5 = i*i
-			
 			bne $s0, $t5, else100 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
-			add $t3, $t3, 1
- 				
+			addi $t3,$t3,1
 			j for100
 		else100:
 			add $s3, $t3,$zero
-			add $t3, $t3, 1
+			addi $t3,$t3,1
 			j for100
  		
 	numeroAte400:
@@ -126,11 +111,11 @@ encontrarInteirosA0eB0:
 		for400:
 			li $t3, 10 #contador i
 			
-			beq $t3, 20, exit #vai para outra funcao
+			beq $t3, 20, calcularRaiz #vai para outra funcao
 			addi $t4,$t3,1 # (i+1)
 			mul $t5,$t4,$t4 # (i+1)*(i+1)
 			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
-			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			beq $t6, $zero, calcularRaiz # saio do if - if(((i+1)*(i+1)) > numero)
 			
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
@@ -138,9 +123,11 @@ encontrarInteirosA0eB0:
 			bne $s0, $t5, else400 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
+			addi $t3,$t3,1
 			j for400
 		else400:
 			add $s3, $t3,$zero
+			addi $t3,$t3,1
 			j for400
 	
 	numeroAte900:
@@ -148,11 +135,11 @@ encontrarInteirosA0eB0:
 		for900:
 			li $t3, 20 #contador i
 			
-			beq $t3, 30, exit #vai para outra funcao
+			beq $t3, 30, calcularRaiz #vai para outra funcao
 			addi $t4,$t3,1 # (i+1)
 			mul $t5,$t4,$t4 # (i+1)*(i+1)
 			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
-			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			beq $t6, $zero, calcularRaiz # saio do if - if(((i+1)*(i+1)) > numero)
 			
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
@@ -160,9 +147,11 @@ encontrarInteirosA0eB0:
 			bne $s0, $t5, else900 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
+			addi $t3,$t3,1
 			j for900
 		else900:
 			add $s3, $t3,$zero
+			addi $t3,$t3,1
 			j for900
  		
  	numeroAte1600:
@@ -170,11 +159,11 @@ encontrarInteirosA0eB0:
 		for1600:
 			li $t3, 30 #contador i
 			
-			beq $t3, 40, exit #vai para outra funcao
+			beq $t3, 40, calcularRaiz #vai para outra funcao
 			addi $t4,$t3,1 # (i+1)
 			mul $t5,$t4,$t4 # (i+1)*(i+1)
 			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
-			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			beq $t6, $zero, calcularRaiz # saio do if - if(((i+1)*(i+1)) > numero)
 			
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
@@ -182,9 +171,11 @@ encontrarInteirosA0eB0:
 			bne $s0, $t5, else1600 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
+			addi $t3,$t3,1
 			j for1600
 		else1600:
 			add $s3, $t3,$zero
+			addi $t3,$t3,1
 			j for1600
  		
  	numeroAte2500:
@@ -192,11 +183,11 @@ encontrarInteirosA0eB0:
 		for2500:
 			li $t3, 40 #contador i
 			
-			beq $t3, 50, exit #vai para outra funcao
+			beq $t3, 50, calcularRaiz #vai para outra funcao
 			addi $t4,$t3,1 # (i+1)
 			mul $t5,$t4,$t4 # (i+1)*(i+1)
 			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
-			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			beq $t6, $zero, calcularRaiz # saio do if - if(((i+1)*(i+1)) > numero)
 			
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
@@ -204,11 +195,65 @@ encontrarInteirosA0eB0:
 			bne $s0, $t5, else2500 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
+			addi $t3,$t3,1
 			j for2500
 		else2500:
 			add $s3, $t3,$zero
+			addi $t3,$t3,1
 			j for2500
+	
+calcularRaiz:
+	
+	lwc1 $f0, num1 #inicializando inteiroA
+	lwc1 $f2, num2 #inicializando inteiroB
+	lwc1 $f4, num3 #inicializando auxPrecisao
+	lwc1 $f6, num4 #para divisao por 2
+	lwc1 $f14, num5 #para multiplicacao por -1
+	lwc1 $f16, num6 #inicializando raiz
+	mtc1 $s3,$f8  #$s3 = inteiroA0
+	mtc1 $s0, $f10 #$s0 = numero
+	mfc1 $t4, $f12
+	mfc1 $t5, $f4 
 
+	#double auxPrecisao = pow(10, -(precisao));
+	#mul.d $f4, 
+	
+	add $t0,$t0,$zero #inicializando iteracoes (inteiro)
+	while:
+		beq $t0,$zero, saida
+		bne $t0,1,elseIteracoes
+		add.d $f0,$f0,$f8  #inteiroA = inteiroA0;
+		div.d $f2,$f2,$f0 #inteiroB = numero / inteiroA
+		
+		j while
+	
+	elseIteracoes:
+		add.d $f0,$f0,$f2 #inteiroA = (inteiroA + inteiroB);
+		div.d $f0, $f0, $f6 #inteiroA = (inteiroA + inteiroB) / 2;
+	
+		div.d $f2, $f10,$f0 #inteiroB = (numero / inteiroA)
+		
+		sub.d $f12, $f2, $f0 #diferencaEntreAeB = inteiroB - inteiroA
+		
+		slt $t1, $t4, $zero #diferencaEntreAeB < 0
+		beq $t1,$zero, continue #confere condicao no outro if
+		mul.d $f12,$f12,$f14 #diferencaEntreAeB *= -1
+		
+		j continue
+		
+		j while
+	continue:
+		slt $t2, $t4, $t5
+		beq $t2, $zero, elseContinue
+		add.d $f16,$f16,$f2
+		
+		j impressaoSaidaRaiz
+	
+	 elseContinue:
+	 	addi $t0, $t0, 1
+	 	slti $t3, $t0, 100
+	 	bne $t1,$zero, imprimirErroNaoFoiPossivel 
+	 	
 imprimirErroEntradaInvalida:
 
 	#impressao string invalida
@@ -285,22 +330,7 @@ impressaoSaidaRaiz:
  	
  	li $v0, 10 #saida
  	syscall
-
-
-exit:
-
-	#impressao space
- 	li $v0, 4
- 	la $a0, stringFeito
- 	syscall
- 	
- 	li $v0, 1
- 	move $a0, $s2
- 	syscall
- 	
- 	li $v0, 1
- 	move $a0, $s3
- 	syscall
- 	
+ 
+ saida:
  	li $v0, 10 #saida
  	syscall
