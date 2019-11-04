@@ -99,54 +99,94 @@ encontrarInteirosA0eB0:
 		else:
 			add $s3, $t3,$zero
 			j for
-			
-			#impressao space
- 			li $v0, 4
- 			la $a0, string100
- 			syscall
-			
- 			li $v0, 10 #saida
- 			syscall
  		
 	numeroAte400:
 		
-		#impressao space
- 		li $v0, 4
- 		la $a0, string400
- 		syscall
- 		
- 		li $v0, 10 #saida
- 		syscall
+		for:
+			li $t3, 10 #contador i
+			
+			beq $t3, 20, exit #vai para outra funcao
+			addi $t4,$t3,1 # (i+1)
+			mul $t5,$t4,$t4 # (i+1)*(i+1)
+			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
+			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			
+			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
+			
+			mul $t5, $t3,$t3 # $t5 = i*i
+			bne $s0, $t5, else #saio do if (i*i == numero)
+			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
+			
+			j for
+		else:
+			add $s3, $t3,$zero
+			j for
 	
 	numeroAte900:
 	
-		#impressao space
- 		li $v0, 4
- 		la $a0, string900
- 		syscall
-
- 		li $v0, 10 #saida
- 		syscall
+		for:
+			li $t3, 20 #contador i
+			
+			beq $t3, 30, exit #vai para outra funcao
+			addi $t4,$t3,1 # (i+1)
+			mul $t5,$t4,$t4 # (i+1)*(i+1)
+			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
+			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			
+			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
+			
+			mul $t5, $t3,$t3 # $t5 = i*i
+			bne $s0, $t5, else #saio do if (i*i == numero)
+			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
+			
+			j for
+		else:
+			add $s3, $t3,$zero
+			j for
  		
  	numeroAte1600:
 	
-		#impressao space
- 		li $v0, 4
- 		la $a0, string1600
- 		syscall
-
- 		li $v0, 10 #saida
- 		syscall
+		for:
+			li $t3, 30 #contador i
+			
+			beq $t3, 40, exit #vai para outra funcao
+			addi $t4,$t3,1 # (i+1)
+			mul $t5,$t4,$t4 # (i+1)*(i+1)
+			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
+			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			
+			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
+			
+			mul $t5, $t3,$t3 # $t5 = i*i
+			bne $s0, $t5, else #saio do if (i*i == numero)
+			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
+			
+			j for
+		else:
+			add $s3, $t3,$zero
+			j for
  		
  	numeroAte2500:
 	
-		#impressao space
- 		li $v0, 4
- 		la $a0, string2500
- 		syscall
- 		
- 		li $v0, 10 #saida
- 		syscall
+		for:
+			li $t3, 40 #contador i
+			
+			beq $t3, 50, exit #vai para outra funcao
+			addi $t4,$t3,1 # (i+1)
+			mul $t5,$t4,$t4 # (i+1)*(i+1)
+			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
+			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			
+			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
+			
+			mul $t5, $t3,$t3 # $t5 = i*i
+			bne $s0, $t5, else #saio do if (i*i == numero)
+			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
+			
+			j for
+		else:
+			add $s3, $t3,$zero
+			j for
 
 imprimirErroEntradaInvalida:
 
