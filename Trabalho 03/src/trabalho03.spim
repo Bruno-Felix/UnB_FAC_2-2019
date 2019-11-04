@@ -51,9 +51,10 @@ validacaoEntradas:
  	li $t0, 0
  	slt $t1, $t0, $s1
  	beq $t2, $t1, imprimirErroEntradaInvalida
- 	li $t0, 17
+ 	
+ 	li $t0, 16
  	slt $t1, $s1, $t0
- 	beq $t2, $t1, imprimirErroEntradaInvalida
+ 	beq $t2, $t1, imprimirErroNaoFoiPossivel
  	
  	j encontrarInteirosA0eB0
  	
@@ -130,9 +131,71 @@ encontrarInteirosA0eB0:
 
 imprimirErroEntradaInvalida:
 
-	#impressao space
+	#impressao string invalida
  	li $v0, 4
  	la $a0, stringEntradaInvalida
+ 	syscall
+ 	
+ 	#impressao space
+ 	li $v0, 4
+ 	la $a0, space
+ 	syscall
+ 	
+ 	li $v0, 10 #saida
+ 	syscall
+ 	
+imprimirErroNaoFoiPossivel:
+	#impressao string nao foi possivel
+ 	li $v0, 4
+ 	la $a0, stringErroInteracoes1
+ 	syscall
+ 	
+ 	#impressao primeiro numero da entrada
+ 	li $v0, 1
+ 	move $a0, $s0
+ 	syscall
+ 	
+ 	#impressao restante string nao foi possivel
+ 	li $v0, 4
+ 	la $a0, stringErroInteracoes2
+ 	syscall
+ 	
+ 	#impressao space
+ 	li $v0, 4
+ 	la $a0, space
+ 	syscall
+ 	
+ 	li $v0, 10 #saida
+ 	syscall
+ 	
+impressaoSaidaRaiz:
+	#impressao string calculada raiz quadrada
+ 	li $v0, 4
+ 	la $a0, stringSaida1
+ 	syscall
+ 	
+ 	#impressao primeiro numero da entrada
+ 	li $v0, 1
+ 	move $a0, $s0
+ 	syscall
+ 	
+ 	#impressao restante string calculada raiz quadrada
+ 	li $v0, 4
+ 	la $a0, stringSaida2
+ 	syscall
+ 	
+ 	# impressao valor da raiz quadrada calculada
+ 	
+ 	#impressao restante string calculada raiz quadrada
+ 	li $v0, 4
+ 	la $a0, stringSaida3
+ 	syscall
+ 	
+ 	#impressao quantidade de iteracoes
+ 	
+ 	#impressao restante string calculada raiz quadrada
+ 	li $v0, 4
+ 	la $a0, stringSaida4
  	syscall
  	
  	#impressao space
