@@ -52,13 +52,14 @@ validacaoEntradas:
  	slt $t1, $t0, $s1
  	beq $t2, $t1, imprimirErroEntradaInvalida
  	
- 	li $t0, 16
+ 	li $t0, 17
  	slt $t1, $s1, $t0
- 	beq $t2, $t1, imprimirErroNaoFoiPossivel
+ 	beq $t2, $t1, imprimirErroEntradaInvalida
  	
  	j encontrarInteirosA0eB0
+ 
  	
- 	 	
+ 		
 encontrarInteirosA0eB0:
 
 	li $t0, 101
@@ -80,29 +81,49 @@ encontrarInteirosA0eB0:
  						syscall
 			
 	numeroAte100:
-		for:
+	
+	li $v0, 4
+ 	la $a0, string100
+ 	syscall
+ 	
+ 	li $t0, 1
+ 	
+		for100:
 			li $t3, 0 #contador i
 			
-			beq $t3, 10, exit #vai para outra funcao
+			beq $t3, 11, exit #vai para outra funcao
+			
 			addi $t4,$t3,1 # (i+1)
 			mul $t5,$t4,$t4 # (i+1)*(i+1)
 			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
-			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			beq $t6, 1, exit # saio do if - if(((i+1)*(i+1)) > numero)
 			
+			li $v0, 4
+ 			la $a0, string400
+		 	syscall
+ 	
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
+			li $v0, 1
+ 			move $a0, $s2
+		 	syscall
+			
 			mul $t5, $t3,$t3 # $t5 = i*i
-			bne $s0, $t5, else #saio do if (i*i == numero)
+			
+			bne $s0, $t5, else100 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
-			j for
-		else:
+			add $t3, $t3, 1
+ 				
+			j for100
+		else100:
 			add $s3, $t3,$zero
-			j for
+			add $t3, $t3, 1
+			j for100
  		
 	numeroAte400:
 		
-		for:
+		for400:
 			li $t3, 10 #contador i
 			
 			beq $t3, 20, exit #vai para outra funcao
@@ -114,17 +135,17 @@ encontrarInteirosA0eB0:
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
 			mul $t5, $t3,$t3 # $t5 = i*i
-			bne $s0, $t5, else #saio do if (i*i == numero)
+			bne $s0, $t5, else400 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
-			j for
-		else:
+			j for400
+		else400:
 			add $s3, $t3,$zero
-			j for
+			j for400
 	
 	numeroAte900:
 	
-		for:
+		for900:
 			li $t3, 20 #contador i
 			
 			beq $t3, 30, exit #vai para outra funcao
@@ -136,17 +157,17 @@ encontrarInteirosA0eB0:
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
 			mul $t5, $t3,$t3 # $t5 = i*i
-			bne $s0, $t5, else #saio do if (i*i == numero)
+			bne $s0, $t5, else900 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
-			j for
-		else:
+			j for900
+		else900:
 			add $s3, $t3,$zero
-			j for
+			j for900
  		
  	numeroAte1600:
 	
-		for:
+		for1600:
 			li $t3, 30 #contador i
 			
 			beq $t3, 40, exit #vai para outra funcao
@@ -158,17 +179,17 @@ encontrarInteirosA0eB0:
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
 			mul $t5, $t3,$t3 # $t5 = i*i
-			bne $s0, $t5, else #saio do if (i*i == numero)
+			bne $s0, $t5, else1600 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
-			j for
-		else:
+			j for1600
+		else1600:
 			add $s3, $t3,$zero
-			j for
+			j for1600
  		
  	numeroAte2500:
 	
-		for:
+		for2500:
 			li $t3, 40 #contador i
 			
 			beq $t3, 50, exit #vai para outra funcao
@@ -180,13 +201,13 @@ encontrarInteirosA0eB0:
 			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
 			
 			mul $t5, $t3,$t3 # $t5 = i*i
-			bne $s0, $t5, else #saio do if (i*i == numero)
+			bne $s0, $t5, else2500 #saio do if (i*i == numero)
 			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
 			
-			j for
-		else:
+			j for2500
+		else2500:
 			add $s3, $t3,$zero
-			j for
+			j for2500
 
 imprimirErroEntradaInvalida:
 
@@ -260,6 +281,25 @@ impressaoSaidaRaiz:
  	#impressao space
  	li $v0, 4
  	la $a0, space
+ 	syscall
+ 	
+ 	li $v0, 10 #saida
+ 	syscall
+
+
+exit:
+
+	#impressao space
+ 	li $v0, 4
+ 	la $a0, stringFeito
+ 	syscall
+ 	
+ 	li $v0, 1
+ 	move $a0, $s2
+ 	syscall
+ 	
+ 	li $v0, 1
+ 	move $a0, $s3
  	syscall
  	
  	li $v0, 10 #saida
