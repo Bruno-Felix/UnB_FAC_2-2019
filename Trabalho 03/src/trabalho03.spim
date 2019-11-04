@@ -80,14 +80,33 @@ encontrarInteirosA0eB0:
  						syscall
 			
 	numeroAte100:
-	
-		#impressao space
- 		li $v0, 4
- 		la $a0, string100
- 		syscall
+		for:
+			li $t3, 0 #contador i
 			
- 		li $v0, 10 #saida
- 		syscall
+			beq $t3, 10, exit #vai para outra funcao
+			addi $t4,$t3,1 # (i+1)
+			mul $t5,$t4,$t4 # (i+1)*(i+1)
+			slt $t6, $s0, $t5 #(i+1)*(i+1)) > numero
+			beq $t6, $zero, exit # saio do if - if(((i+1)*(i+1)) > numero)
+			
+			addi $s2, $t3,1  #$s2 = inteiroB0 = i+1
+			
+			mul $t5, $t3,$t3 # $t5 = i*i
+			bne $s0, $t5, else #saio do if (i*i == numero)
+			subi $s3, $t3,1 #$s3 = inteiroA0 = i-1
+			
+			j for
+		else:
+			add $s3, $t3,$zero
+			j for
+			
+			#impressao space
+ 			li $v0, 4
+ 			la $a0, string100
+ 			syscall
+			
+ 			li $v0, 10 #saida
+ 			syscall
  		
 	numeroAte400:
 		
