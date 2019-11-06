@@ -97,7 +97,7 @@ encontrarInteirosA0eB0:
 				j for100
 				
 				if100:
- 					addi $s3, $t3, 1
+ 					addi $s4, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif100
@@ -124,7 +124,7 @@ encontrarInteirosA0eB0:
 				j for400
 				
 				if400:
- 					addi $s3, $t3, 1
+ 					addi $s4, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif400
@@ -150,7 +150,7 @@ encontrarInteirosA0eB0:
 				j for900
 				
 				if900:
- 					addi $s3, $t3, 1
+ 					addi $s4, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif900
@@ -176,7 +176,7 @@ encontrarInteirosA0eB0:
 				j for1600
 				
 				if1600:
- 					addi $s3, $t3, 1
+ 					addi $s4, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif1600
@@ -202,7 +202,7 @@ encontrarInteirosA0eB0:
 				j for2500
 				
 				if2500:
- 					addi $s3, $t3, 1
+ 					addi $s4, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif2500
@@ -223,16 +223,22 @@ calcularRaiz:
  	syscall
  	
  	li $v0, 1
- 	move $a0, $s3
+ 	move $a0, $s4
  	syscall
- 	
+	
+	#lwc1 $f0, 1($s2)
+	mtc1.d $s2, $f0
+	mtc1.d $s4, $f2
+	
+ 	j saida
+	
 	lwc1 $f0, num1 #inicializando inteiroA
 	lwc1 $f2, num2 #inicializando inteiroB
 	lwc1 $f4, num3 #inicializando auxPrecisao
 	lwc1 $f6, num4 #para divisao por 2
 	lwc1 $f14, num5 #para multiplicacao por -1
 	lwc1 $f16, num6 #inicializando raiz
-	mtc1 $s3,$f8  #$s3 = inteiroA0
+	mtc1 $s4, $f8  #$s4 = inteiroA0
 	mtc1 $s0, $f10 #$s0 = numero
 	mfc1 $t4, $f12
 	mfc1 $t5, $f4 
