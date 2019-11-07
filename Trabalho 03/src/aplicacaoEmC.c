@@ -45,15 +45,16 @@ void encontrarInteirosA0eB0(int numero, int *inteiroA0, int *inteiroB0){
     //caso o numero lido seja menor ou igual a 100, ele entra nesse for para encontrar os inteiros A0 e B0
     if(numero <= 100){
         for(int i = 0; i <= 10; i++){
+            if(((i+1)*(i+1)) > numero){ //Bn > numero lido   => exemplo do pdf: 12*12 = 144 > 130 <=> (11+1)*(11+1) = 144;
+                                        //(Porem seria com numeros no intervalo de numero <= 100)
+                *inteiroB0 = i+1;       //B0
 
-            if(((i+1)*(i+1)) > numero){
-                *inteiroB0 = i+1;
-
-                if(i*i == numero){
-                    *inteiroA0 = i-1;
+                if(i*i == numero){      //Quadrado de i é igual ao numero lido
+                    *inteiroA0 = i-1;   //AO
                 }
                 else{
-                    *inteiroA0 = i;
+                    *inteiroA0 = i;     //Quadrado de i é menor que o numero lido   => exemplo do pdf:  11*11 = 121 < 130.
+                                        //A0
                 }
                 break;
             }
@@ -62,14 +63,16 @@ void encontrarInteirosA0eB0(int numero, int *inteiroA0, int *inteiroB0){
     //caso o numero lido seja maior que 100 e menor ou igual a 400, ele entra nesse for para encontrar os inteiros A0 e B0
     if(numero > 100 && numero <= 400){
         for(int i = 10; i <= 20; i++){
-            if(((i+1)*(i+1)) > numero){
-                *inteiroB0 = i+1;
+            if(((i+1)*(i+1)) > numero){ //Bn > numero lido => exemplo do pdf: 12*12 = 144 > 130 <=> (11+1)*(11+1) = 144;
+                                        //(Porem seria com numeros no intervalo de 400 >= numero > 100)
+                *inteiroB0 = i+1;       //B0
 
-                if(i*i == numero){
-                    *inteiroA0 = i-1;
+                if(i*i == numero){      //Quadrado de i é igual ao numero lido
+                    *inteiroA0 = i-1;   //A0
                 }
                 else{
-                    *inteiroA0 = i;
+                    *inteiroA0 = i;     //Quadrado de i é menor que o numero lido => exemplo do pdf:  11*11 = 121 < 130.
+                                        //A0
                 }
                 break;
             }
@@ -78,15 +81,16 @@ void encontrarInteirosA0eB0(int numero, int *inteiroA0, int *inteiroB0){
     //caso o numero lido seja maior que 400 e menor ou igual a 900, ele entra nesse for para encontrar os inteiros A0 e B0
     if(numero > 400 && numero <= 900){
         for(int i = 20; i <= 30; i++){
-            if( ((i+1)*(i+1)) > numero){
+            if( ((i+1)*(i+1)) > numero){ //Bn > numero lido => exemplo do pdf: 12*12 = 144 > 130 <=> (11+1)*(11+1) = 144;
+                                         //(Porem seria com numeros no intervalo de 900 >= numero > 400)
+                *inteiroB0 = i+1;        //B0
 
-                *inteiroB0 = i+1;
-
-                if(i*i == numero){
-                    *inteiroA0 = i-1;
+                if(i*i == numero){       //Quadrado de i é igual ao numero lido
+                    *inteiroA0 = i-1;    //A0
                 }
                 else{
-                    *inteiroA0 = i;
+                    *inteiroA0 = i;      //Quadrado de i é menor que o numero lido => exemplo do pdf:  11*11 = 121 < 130.
+                                         //A0
                 }
 
                 break;
@@ -96,15 +100,16 @@ void encontrarInteirosA0eB0(int numero, int *inteiroA0, int *inteiroB0){
     //caso o numero lido seja maior que 900 e menor ou igual a 1600, ele entra nesse for para encontrar os inteiros A0 e B0
     if(numero > 900 && numero <= 1600){
         for(int i = 30; i <= 40; i++){
-            if( ((i+1)*(i+1)) > numero){
+            if( ((i+1)*(i+1)) > numero){ //Bn > numero lido => exemplo do pdf: 12*12 = 144 > 130 <=> (11+1)*(11+1) = 144;
+                                         //(Porem seria com numeros no intervalo de 1600 >= numero > 900)
+                *inteiroB0 = i+1;        //B0
 
-                *inteiroB0 = i+1;
-
-                if(i*i == numero){
-                    *inteiroA0 = i-1;
+                if(i*i == numero){       //Quadrado de i é igual ao numero lido
+                    *inteiroA0 = i-1;    //A0
                 }
                 else{
-                    *inteiroA0 = i;
+                    *inteiroA0 = i;      //Quadrado de i é menor que o numero lido => exemplo do pdf:  11*11 = 121 < 130.
+                                         //A0
                 }
                 break;
             }
@@ -113,15 +118,16 @@ void encontrarInteirosA0eB0(int numero, int *inteiroA0, int *inteiroB0){
     //caso o numero lido seja maior que 1600 e menor ou igual a 2500, ele entra nesse for para encontrar os inteiros A0 e B0
      if(numero > 1600 && numero <= 2500){
         for(int i = 40; i <= 50; i++){
-            if(((i+1)*(i+1)) > numero){
+            if(((i+1)*(i+1)) > numero){  //Bn > numero lido => exemplo do pdf: 12*12 = 144 > 130 <=> (11+1)*(11+1) = 144;
+                                         //(Porem seria com numeros no intervalo de 2500 >= numero > 1600)
+                *inteiroB0 = i+1;        //B0
 
-                *inteiroB0 = i+1;
-
-                if(i*i == numero){
-                    *inteiroA0 = i-1;
+                if(i*i == numero){       //Quadrado de i é igual ao numero lido
+                    *inteiroA0 = i-1;    //A0
                 }
                 else{
-                    *inteiroA0 = i;
+                    *inteiroA0 = i;      //Quadrado de i é menor que o numero lido => exemplo do pdf:  11*11 = 121 < 130.
+                                         //A0
                 }
                 break;
             }
