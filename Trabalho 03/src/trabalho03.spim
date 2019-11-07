@@ -5,10 +5,12 @@
 	const9 : .float 9.0
 	num1: .double 3.0 #inicializando inteiroA
 	num2: .double 5.0 #inicializando inteiroB
-	num3: .double 0.0 #inicializando auxPrecisao
-	num4: .double 2.0 #para divisao por 2
-	num5: .double -1.0 
-	num6: .double 0.0 #inicializando raiz
+	numAuxPrecisao: .word 10 #inicializando auxPrecisao
+	num4: .word 2 #para divisao por 2
+	num5: .word -1 
+	num6: .word 0 #inicializando raiz
+	num10: .word 10
+	num100: .word 100
 	
 	stringEntradaInvalida:	.asciiz "Entradas invalidas."
 	
@@ -44,7 +46,7 @@ main:
  	li $v0, 5
  	sw $v0, aproximacao
  	syscall
- 	move $s1, $v0
+ 	move $s2, $v0
  	
  	j validacaoEntradas
  	
@@ -57,11 +59,11 @@ validacaoEntradas:
  	beq $t2, $t1, imprimirErroEntradaInvalida 
  	
  	li $t0, 0
- 	slt $t1, $t0, $s1
+ 	slt $t1, $t0, $s2
  	beq $t2, $t1, imprimirErroEntradaInvalida
  	
  	li $t0, 17
- 	slt $t1, $s1, $t0
+ 	slt $t1, $s2, $t0
  	beq $t2, $t1, imprimirErroEntradaInvalida
  	
  	
@@ -99,16 +101,16 @@ encontrarInteirosA0eB0:
 				j for100
 				
 				if100:
- 					addi $s4, $t3, 1
+ 					addi $s6, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif100
- 						addi $s2, $t3, 0
+ 						addi $s4, $t3, 0
 
  						j calcularRaiz
  				
  					auxif100:
- 						addi $s2, $t3, -1
+ 						addi $s4, $t3, -1
  
 						j calcularRaiz
 					
@@ -126,16 +128,16 @@ encontrarInteirosA0eB0:
 				j for400
 				
 				if400:
- 					addi $s4, $t3, 1
+ 					addi $s6, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif400
- 						addi $s2, $t3, 0
+ 						addi $s4, $t3, 0
  
  						j calcularRaiz
  				
  					auxif400:
- 						addi $s2, $t3, -1
+ 						addi $s4, $t3, -1
  	
 						j calcularRaiz
 	
@@ -152,16 +154,16 @@ encontrarInteirosA0eB0:
 				j for900
 				
 				if900:
- 					addi $s4, $t3, 1
+ 					addi $s6, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif900
- 						addi $s2, $t3, 0
+ 						addi $s4, $t3, 0
 
  						j calcularRaiz
  				
  					auxif900:
- 						addi $s2, $t3, -1
+ 						addi $s4, $t3, -1
 
 						j calcularRaiz
  		
@@ -178,16 +180,16 @@ encontrarInteirosA0eB0:
 				j for1600
 				
 				if1600:
- 					addi $s4, $t3, 1
+ 					addi $s6, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif1600
- 						addi $s2, $t3, 0
+ 						addi $s4, $t3, 0
  						
  						j calcularRaiz
  				
  					auxif1600:
- 						addi $s2, $t3, -1
+ 						addi $s4, $t3, -1
 						
 						j calcularRaiz
  		
@@ -204,91 +206,121 @@ encontrarInteirosA0eB0:
 				j for2500
 				
 				if2500:
- 					addi $s4, $t3, 1
+ 					addi $s6, $t3, 1
  					
  					mul $t5,$t3,$t3 # i*i
  					beq $s0, $t5, auxif2500
- 						addi $s2, $t3, 0
+ 						addi $s4, $t3, 0
  						
  						j calcularRaiz
  				
  					auxif2500:
- 						addi $s2, $t3, -1
+ 						addi $s4, $t3, -1
  		
 						j calcularRaiz
 	
 calcularRaiz:
 	
 	
-	li $v0, 1
- 	move $a0, $s2
- 	syscall
+	#li $v0, 1
+ 	#move $a0, $s4
+ 	#syscall
  	
- 	li $v0, 1
- 	move $a0, $s4
- 	syscall
+ 	#li $v0, 1
+ 	#move $a0, $s6
+ 	#syscall
 	
-	#lwc1 $f0, 1($s2)
-	mtc1.d $s2, $f6
-	cvt.d.w $f6, $f6
 
-	mtc1.d $s4, $f4
+	mtc1.d $s0, $f0
+	cvt.d.w $f0, $f0
+	#li $v0, 3
+ 	#mov.d $f12, $f0
+ 	#syscall
+
+	mtc1.d $s4, $f2		#A0
+	cvt.d.w $f2, $f2
+	#li $v0, 3
+ 	#mov.d $f12, $f2
+ 	#syscall
+ 	
+	mtc1.d $s6, $f4		#B0
 	cvt.d.w $f4, $f4
+	#li $v0, 3
+ 	#mov.d $f12, $f4
+ 	#syscall
 	
-	mul.d $f10, $f6, $f4
 	
- 	j saida
-	
-	lwc1 $f0, num1 #inicializando inteiroA
-	lwc1 $f2, num2 #inicializando inteiroB
-	lwc1 $f4, num3 #inicializando auxPrecisao
-	lwc1 $f6, num4 #para divisao por 2
-	lwc1 $f14, num5 #para multiplicacao por -1
-	lwc1 $f16, num6 #inicializando raiz
-	mtc1 $s4, $f8  #$s4 = inteiroA0
-	mtc1 $s0, $f10 #$s0 = numero
-	mfc1 $t4, $f12
-	mfc1 $t5, $f4 
+	lwc1 $f6, numAuxPrecisao #inicializando auxPrecisao
+	cvt.d.w $f6, $f6
+	lwc1 $f8, num5 #para multiplicacao por -1
+	cvt.d.w $f8, $f8
+	lwc1 $f10, num6 #inicializando raiz
+	cvt.d.w $f10, $f10
+	lwc1 $f14, num10
+	cvt.d.w $f14, $f14
+	lwc1 $f16, num4
+	cvt.d.w $f16, $f16
+	lwc1 $f18, num6 #comparacao diferenca < 0
+	cvt.d.w $f18, $f18
+	lwc1 $f28, num100 #comparacao diferenca < 0
+	cvt.d.w $f28, $f28
 
+ 	
 	#double auxPrecisao = pow(10, -(precisao));
-	#mul.d $f4, 
+	li $t3, 0 #contador i
 	
-	add $t0,$t0,$zero #inicializando iteracoes (inteiro)
-	while:
-		beq $t0,$zero, saida
-		bne $t0,1,elseIteracoes
-		add.d $f0,$f0,$f8  #inteiroA = inteiroA0;
-		div.d $f2,$f2,$f0 #inteiroB = numero / inteiroA
+	li $t0, 1 #interacoes
 	
-	elseIteracoes:
-		add.d $f0,$f0,$f2 #inteiroA = (inteiroA + inteiroB);
-		div.d $f0, $f0, $f6 #inteiroA = (inteiroA + inteiroB) / 2;
+	li $t1, 100
 	
-		div.d $f2, $f10,$f0 #inteiroB = (numero / inteiroA)
-		
-		sub.d $f12, $f2, $f0 #diferencaEntreAeB = inteiroB - inteiroA
-		
-		slt $t1, $t4, $zero #diferencaEntreAeB < 0
-		beq $t1,$zero, continue #confere condicao no outro if
-		mul.d $f12,$f12,$f14 #diferencaEntreAeB *= -1
-		
-		j continue
-		
-		j while
-	continue:
-		slt $t2, $t4, $t5
-		beq $t2, $zero, elseContinue
-		
-		add.d $f16,$f16,$f2
-		
-		j impressaoSaidaRaiz
+	addi $t4, $s2, 1
+	forAuxPrecisao:
 	
-	 elseContinue:
-	 	addi $t0, $t0, 1
-	 	slti $t3, $t0, 100
-	 	bne $t1,$zero, imprimirErroNaoFoiPossivel 
-	 		j while
-	 		
+		beq $t3, $t4, while
+		
+		div.d $f6, $f6, $f14
+		addi $t3, $t3, 1
+		
+		j forAuxPrecisao
+	
+
+	while: 	
+		beq $t0, $zero, saida
+		
+		bne $t0, 1, elseIteracoes
+			
+			div.d $f4, $f0, $f2 #inteiroB = numero / inteiroA
+			addi $t0, $t0, 1
+			j while
+			
+		elseIteracoes:
+			add.d $f2, $f2, $f4 #inteiroA = (inteiroA + inteiroB);
+			div.d $f2, $f2, $f16 #inteiroA = (inteiroA + inteiroB) / 2;
+	
+			div.d $f4, $f0, $f2 #inteiroB = (numero / inteiroA)
+				
+			sub.d $f20, $f4, $f2 #diferencaEntreAeB = inteiroB - inteiroA
+			
+			c.lt.d  $f20, $f18 #diferencaEntreAeB < 0
+			bc1t transformarPositivo
+			
+			j continue
+			
+			transformarPositivo:
+				mul.d $f20, $f20, $f8
+				
+				j continue
+				
+			continue:
+				c.le.d $f20, $f6
+				bc1t  impressaoSaidaRaiz
+				
+				addi $t0, $t0, 1
+				slt $t2, $t0, $t1
+				beq $t2, 0, imprimirErroNaoFoiPossivel
+				j while
+				
+				
 imprimirErroEntradaInvalida:
 
 	#impressao string invalida
@@ -345,6 +377,9 @@ impressaoSaidaRaiz:
  	syscall
  	
  	# impressao valor da raiz quadrada calculada
+ 	li $v0, 3
+ 	mov.d $f12, $f4
+ 	syscall
  	
  	#impressao restante string calculada raiz quadrada
  	li $v0, 4
@@ -352,6 +387,9 @@ impressaoSaidaRaiz:
  	syscall
  	
  	#impressao quantidade de iteracoes
+ 	li $v0, 1
+ 	move $a0, $t0
+ 	syscall
  	
  	#impressao restante string calculada raiz quadrada
  	li $v0, 4
@@ -367,5 +405,6 @@ impressaoSaidaRaiz:
  	syscall
  
  saida:
+ 	
  	li $v0, 10 #saida
  	syscall
